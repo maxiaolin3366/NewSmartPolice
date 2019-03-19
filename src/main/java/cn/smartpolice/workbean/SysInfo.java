@@ -8,66 +8,53 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-import cn.smartpolice.action.AlawaysRun;
-import cn.smartpolice.hibernate.SoftInfo;
+
 import cn.smartpolice.protocol.MsgTaskCheckThread;
-import cn.smartpolice.protocol.ProtocolAccount;
 import cn.smartpolice.protocol.ProtocolBase;
-import cn.smartpolice.protocol.ProtocolControl;
-import cn.smartpolice.protocol.ProtocolDiscoverLAN;
-import cn.smartpolice.protocol.ProtocolEncryption;
-import cn.smartpolice.protocol.ProtocolFile;
-import cn.smartpolice.protocol.ProtocolLogin;
-import cn.smartpolice.protocol.ProtocolMessage;
-import cn.smartpolice.protocol.ProtocolQuery;
-import cn.smartpolice.protocol.ProtocolRelate;
-import cn.smartpolice.protocol.ProtocolTest;
-import cn.smartpolice.protocol.ProtocolUpgrade;
-import cn.smartpolice.webservice.ManagerInfoService;
 
 
-/**
- * ÏµÍ³ĞÅÏ¢ Ê¹ÓÃsynchronizedSet·½·¨Ê¹HashSet¾ßÓĞÍ¬²½µÄÄÜÁ¦£ºSet s =
+/*
+ * ç³»ç»Ÿä¿¡æ¯ ä½¿ç”¨synchronizedSetæ–¹æ³•ä½¿HashSetå…·æœ‰åŒæ­¥çš„èƒ½åŠ›ï¼šSet s =
  * Collections.synchronizedSet(new HashSet(...));
- * 
- * @author Áõ³¬
+ *
+ * @author åˆ˜???
  *
  */
 public class SysInfo {
 //    private static int 
 	private static SysInfo instance;
-	private static UIUserInfo uIUserInfo; // ½çÃæÓÃ»§µÇÂ¼ĞÅÏ¢
+	/*private static UIUserInfo uIUserInfo; // ç•Œé¢ç”¨æˆ·ç™»å½•ä¿¡æ¯
 	public static UIUserInfo getuIUserInfo() {
 		return uIUserInfo;
-	}
+	}*/
 
-	public static void setuIUserInfo(UIUserInfo uIUserInfo) {
+	/*public static void setuIUserInfo(UIUserInfo uIUserInfo) {
 		SysInfo.uIUserInfo = uIUserInfo;
-	}
+	}*/
 
 
-	private static Set<UserNode> userNodeQueue = Collections.synchronizedSet(new HashSet<UserNode>()); // dev¶ÓÁĞ
+	private static Set<UserNode> userNodeQueue = Collections.synchronizedSet(new HashSet<UserNode>()); // devé˜Ÿ???
 	// private static HashSet<AppNode> appNodeQueue = new HashSet<AppNode>();
 
-	private static ArrayList<FileNodeInfo> fileDataInfoQueue = new ArrayList<FileNodeInfo>(); // ÎÄ¼ş¶ÓÁĞ	
-//	private static ArrayList<SoftInfo> SoftInfQueue = new ArrayList<SoftInfo>(); //Èí¼ş¶ÓÁĞ
-	private static SysStatInfo sysStatInfo = new SysStatInfo(); // ÏµÍ³Í³¼ÆĞÅÏ¢
+	//	private static ArrayList<FileNodeInfo> fileDataInfoQueue = new ArrayList<FileNodeInfo>(); // æ–‡ä»¶é˜Ÿåˆ—
+//	private static ArrayList<SoftInfo> SoftInfQueue = new ArrayList<SoftInfo>(); //è½¯ä»¶é˜Ÿåˆ—
+	private static SysStatInfo sysStatInfo = new SysStatInfo(); // ç³»ç»Ÿç»Ÿè®¡ä¿¡???
 
 
-	private static SysCfgInfo sysCfgInfo; // ÏµÍ³ÅäÖÃĞÅÏ¢
+	private static SysCfgInfo sysCfgInfo; // ç³»ç»Ÿé…ç½®ä¿¡æ¯
 	private static  List<MsgTask> msgTaskQueue = Collections.synchronizedList(new ArrayList<MsgTask>());
 	private static Thread msgTaskCheckThread;
 	private static Thread startThread;
 
-	// Ğ­Òé´¦ÀíÀàÊı×é
-	private static ProtocolBase[] prtocolBases = { new ProtocolTest(), new ProtocolLogin(), new ProtocolAccount(),
+	// åè®®å¤„ç†ç±»æ•°??
+	private static ProtocolBase[] prtocolBases = { /*new ProtocolTest(), new ProtocolLogin(), new ProtocolAccount(),
 			new ProtocolControl(), new ProtocolQuery(), new ProtocolMessage(), new ProtocolDiscoverLAN(),
-			new ProtocolFile(),new ProtocolEncryption(),new ProtocolRelate(),new ProtocolFile(),new ProtocolUpgrade()};
+			new ProtocolFile(),new ProtocolEncryption(),new ProtocolRelate(),new ProtocolFile(),new ProtocolUpgrade()*/};
 	
-	public static SysStatInfo getSysStatInfo() {
-		sysStatInfo.setOpenFileNum(fileDataInfoQueue.size());//ÉèÖÃÎÄ¼ş´ò¿ªÊı
+/*	public static SysStatInfo getSysStatInfo() {
+		sysStatInfo.setOpenFileNum(fileDataInfoQueue.size());//è®¾ç½®æ–‡ä»¶æ‰“å¼€??
 		return sysStatInfo;
-	}
+	}*/
 
 	public static Thread getMsgTaskCheckThread() {
 		return msgTaskCheckThread;
@@ -79,17 +66,14 @@ public class SysInfo {
 	public static Thread getStartThread() {
 		return startThread;
 	}
-	public Thread createStartThread(ManagerInfoService managerInfoService){	
-		msgTaskCheckThread=new Thread((new AlawaysRun(managerInfoService)));
-		return msgTaskCheckThread;                                                  
-	}
-	public static ProtocolBase[] getPrtocolBases() {
-		return prtocolBases;
+
+	// å°†æ„é€ å™¨ç§???
+	private SysInfo() {
 	}
 
-	public static ArrayList<FileNodeInfo> getFileDataInfoQueue() {
+/*	public static ArrayList<FileNodeInfo> getFileDataInfoQueue() {
 		return fileDataInfoQueue;
-	}
+	}*/
 	
 
 
@@ -108,47 +92,42 @@ public class SysInfo {
 		return sysCfgInfo;
 	}
 
-	// ½«¹¹ÔìÆ÷Ë½ÓĞ
-	private SysInfo() {
+	public static ProtocolBase[] getPrtocolBases() {
+		return prtocolBases;
 	}
 
-	// µÃµ½SysInfoµ¥ÁĞ
+	// å¾—åˆ°SysInfoå•???
 	public static SysInfo getInstance() {
 		instance = new SysInfo();
 		return instance;
 	}
 
-	// ¸ù¾İidÕÒµ½appĞÅÏ¢½Úµã
+	// æ ¹æ®idæ‰¾åˆ°appä¿¡æ¯èŠ‚ç‚¹
 	public AppNode getAppNodeById(int id) {
 		for (UserNode userNode : userNodeQueue) {
-			// idÏàµÈ²¢ÅĞ¶ÏÊÇ·ñÊÇappnode
+			// idç›¸ç­‰å¹¶åˆ¤æ–­æ˜¯å¦æ˜¯appnode
 			if (userNode.getId() == id && userNode instanceof AppNode) {
-				AppNode appNode = (AppNode) userNode; // ÏòÏÂÀàĞÍ×ª»»
+				AppNode appNode = (AppNode) userNode; // å‘ä¸‹ç±»????è½¬æ¢
 				return appNode;
 			}
 		}
 		return null;
 	}
 	/**
-	 * ¸ù¾İÓÃ»§ÕË»§²éÕÒ½Úµã
-	 * @param string ÓÃ»§ÕË»§
+	 * æ ¹æ®ç”¨æˆ·è´¦æˆ·æŸ¥æ‰¾èŠ‚ç‚¹
 	 * @return
 	 */
 	public AppNode getAppNodeByAccount(String account) {
 		for (UserNode userNode : userNodeQueue) {
-			// idÏàµÈ²¢ÅĞ¶ÏÊÇ·ñÊÇappnode
+			// idç›¸ç­‰å¹¶åˆ¤æ–­æ˜¯å¦æ˜¯appnode
 			if (userNode.getAccount().equals(account) && userNode instanceof AppNode) {
-				AppNode appNode = (AppNode) userNode; // ÏòÏÂÀàĞÍ×ª»»
+				AppNode appNode = (AppNode) userNode; // å‘ä¸‹ç±»????è½¬æ¢
 				return appNode;
 			}
 		}
 		return null;
 	}
-	/**
-	 * ¸ù¾İÓÃ»§ÕË»§²éÕÒ½Úµã
-	 * @param string ÓÃ»§ÕË»§
-	 * @return
-	 */
+
 	public DevNode getDevNodeByAccount(String account) {
 		for (UserNode userNode : userNodeQueue) {
 			if (userNode.getAccount().equals(account) && userNode instanceof DevNode) {
@@ -158,7 +137,8 @@ public class SysInfo {
 		}
 		return null;
 	}
-	// ¸ù¾İidÕÒµ½devĞÅÏ¢½Úµã
+
+	// æ ¹æ®idæ‰¾åˆ°devä¿¡æ¯èŠ‚ç‚¹
 	public DevNode getDevNodeById(int id) {
 		for (UserNode userNode : userNodeQueue) {
 			if (userNode.getId() == id && userNode instanceof DevNode) {
@@ -169,31 +149,31 @@ public class SysInfo {
 		return null;
 	}
 
-	// Ìí¼ÓÒ»¸öuserNode½Úµãµ½¶ÓÁĞÖĞ
+	// æ·»åŠ ??ä¸ªuserNodeèŠ‚ç‚¹åˆ°é˜Ÿåˆ—???
 	public synchronized void addUserNode(UserNode userNode) {
 
-		this.userNodeQueue.add(userNode);
+		userNodeQueue.add(userNode);
 	}
 
-	// É¾³ıuserNode¶ÓÁĞÖĞµÄÒ»¸ö½Úµã
+	// åˆ é™¤userNodeé˜Ÿåˆ—ä¸­çš„???ä¸ªèŠ‚??
 	public synchronized void removeUserNode(UserNode userNode) {
 
-		this.userNodeQueue.remove(userNode);
+		userNodeQueue.remove(userNode);
 	}
 
 	public void addMsgTask(MsgTask msgTask) {
 
-		this.msgTaskQueue.add(msgTask);
+		msgTaskQueue.add(msgTask);
 	}
 	public boolean removeMsgTask(MsgTask msgTask) {
 
-		return this.msgTaskQueue.remove(msgTask);
+		return msgTaskQueue.remove(msgTask);
 		
 	}
 	
 	
 	/**
-	 * ÏûÏ¢´¦ÀíÏß³Ì´´½¨
+	 * æ¶ˆæ¯å¤„ç†çº¿ç¨‹åˆ›å»º
 	 */
 	public void msgTaskThreadCheck(){
 		Thread msgTaskCheckThread = null;
@@ -207,7 +187,7 @@ public class SysInfo {
 			}
 		}
 	}
-	public static void startThread(ManagerInfoService managerInfoService) {
+	/*public static void startThread(ManagerInfoService managerInfoService) {
 		Thread msgTaskCheckThread = null;
 		if (SysInfo.getStartThread() == null) {
 			msgTaskCheckThread = SysInfo.getInstance().createStartThread( managerInfoService);
@@ -218,5 +198,5 @@ public class SysInfo {
 				msgTaskCheckThread.start();
 			}
 		}
-	}
+	}*/
 }

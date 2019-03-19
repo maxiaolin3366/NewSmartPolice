@@ -13,71 +13,69 @@ import cn.smartpolice.protocol.ProtocolProc;
 public class NetHandler implements  IoHandler{
 
 	ProtocolProc ProtocolProc = new ProtocolProc();
-	@Override
 	public void sessionCreated(IoSession session) throws Exception {
 		// TODO Auto-generated method stub
-		SocketAddress remoteAddress = session.getRemoteAddress(); //»ñÈ¡Ô¶³Ì¿Í»§¶ËµØÖ·ÐÅÏ¢
+		SocketAddress remoteAddress = session.getRemoteAddress(); //èŽ·å–è¿œç¨‹å®¢æˆ·ç«¯åœ°???ä¿¡???
 		Date date = new Date();
-		System.out.println(remoteAddress+"Á¬½Ó½øÀ´¿©£¡£¡:"+date.toString());
+		System.out.println(remoteAddress + "è¿žæŽ¥è¿›æ¥å’¯ï¼??:" + date.toString());
 	}
 
-	@Override
 	public void sessionOpened(IoSession session) throws Exception {
 		// TODO Auto-generated method stub
 		System.out.println("Session Opened -->");
-		SocketAddress remoteAddress = session.getRemoteAddress(); //»ñÈ¡Ô¶³Ì¿Í»§¶ËµØÖ·ÐÅÏ¢
+		SocketAddress remoteAddress = session.getRemoteAddress(); //èŽ·å–è¿œç¨‹å®¢æˆ·ç«¯åœ°???ä¿¡???
 		System.out.println(remoteAddress);
 	}
 
-	@Override
+
 	public void sessionClosed(IoSession session) throws Exception {
 		// TODO Auto-generated method stub
 		Date date = new Date();
-		System.out.println("...>Ô¶³ÌÍøÂçÁ¬½Ó±»¹Ø±ÕÊ±¼ä:"+date.toString());
+		System.out.println("...>è¿œç¨‹ç½‘ç»œè¿žæŽ¥è¢«å…³é—­æ—¶??:" + date.toString());
 	}
 
-	@Override
+	
 	public void sessionIdle(IoSession session, IdleStatus status) throws Exception {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
+
 	public void exceptionCaught(IoSession session, Throwable cause) throws Exception {
 		// TODO Auto-generated method stub
-		System.out.println("--ÆäËû·½·¨Å×³öÒì³£--:"+cause);
-		System.out.println("¿Í»§¶Ë"+session.getRemoteAddress()+"¹Ø±ÕÁËÁ´½Ó");
+		System.out.println("--å…¶ä»–æ–¹æ³•æŠ›å‡ºå¼‚å¸¸--:" + cause);
+		System.out.println("å®¢æˆ·??" + session.getRemoteAddress() + "å…³é—­äº†é“¾???");
 	}
 
-	@Override
+	
 	public void messageReceived(IoSession session, Object message) throws Exception {
 		// TODO Auto-generated method stub
 		long time1 = new Date().getTime();
-		System.out.println("--> ÏûÏ¢½ÓÈë ...");
+		System.out.println("--> æ¶ˆæ¯æŽ¥å…¥ ...");
 		/*String msg = message.toString();
-		System.out.println("Ô­Ê¼Êý¾Ý£º"+msg); */
-		IoBuffer ioBuffer = (IoBuffer) message; //ÓÃIoBuffer¶ÁÈ¡´«ÈëµÄÏûÏ¢×Ö½Ú
+		System.out.println("åŽŸå§‹æ•°æ®???"+msg); */
+		IoBuffer ioBuffer = (IoBuffer) message; //ç”¨IoBufferè¯»å–ä¼ å…¥çš„æ¶ˆæ¯å­—???
 		
 		byte[] b = new byte [ioBuffer.limit()];
 		ioBuffer.get(b);
 		
 		ProtocolProc.RecvPktProc(session,b);
 		long time2 = new Date().getTime();
-		System.out.println("ÏµÍ³·´Ó¦Ê±¼ä£º"+(time2-time1)+"ºÁÃë");
-		System.out.println("----µÈ´ýÏûÏ¢½ÓÈë----");
+		System.out.println("ç³»ç»Ÿååº”æ—¶é—´??" + (time2 - time1) + "æ¯«???");
+		System.out.println("----ç­‰å¾…æ¶ˆæ¯æŽ¥???----");
 	}
 
-	@Override
+	
 	public void messageSent(IoSession session, Object message) throws Exception {
 		// TODO Auto-generated method stub
-		System.out.println("ÐÅÏ¢ÒÑ¾­´«ËÍ¸ø¿Í»§¶Ë"); 
+		System.out.println("ä¿¡æ¯å·²ç»ä¼ ???ç»™å®¢æˆ·??");
 	}
 
-	@Override
+	
 	public void inputClosed(IoSession session) throws Exception {
 		// TODO Auto-generated method stub
 		Date date = new Date();
-		System.out.println("...>Ô¶³ÌÍøÂçÁ¬½Ó±»¹Ø±ÕÊ±¼ä:"+date.toString());
+		System.out.println("...>è¿œç¨‹ç½‘ç»œè¿žæŽ¥è¢«å…³é—­æ—¶??:" + date.toString());
 	}
 
 

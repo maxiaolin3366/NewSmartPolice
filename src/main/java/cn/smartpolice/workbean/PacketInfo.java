@@ -9,38 +9,38 @@ import org.apache.mina.core.session.IoSession;
  *
  */
 public class PacketInfo {
-	@Override
-	public String toString() {
-		return "½ÓÊÕµ½µÄ£ºPacketInfo [cmd=" + cmd + ", type=" + type + ", opt=" + opt + ", sort=" + sort + ", sid=" + sid
-				+ ", seq=" + seq + ", ack=" + ack + ", did=" + did + ", keyseq=" + keyseq + ", sip=" + sip + ", sport="
-				+ sport + ", date=" + date + ", data=" + data + "]";
-	}
+    private byte[] message; //åè®®æ•°æ®ç¼“å†²??
 	private IoSession ioSession;
-	
-	private byte[] message; //Ğ­ÒéÊı¾İ»º³åÇø
-	//»ù±¾Ê×²¿³ÉÔ±
+    //åŸºæœ¬é¦–éƒ¨æˆ???
 	private byte cmd;
+    //é¦–éƒ¨é€‰????æˆå‘˜
+    private int did;
 	private byte type;
 	private byte opt;
 	private byte sort;
 	private int sid;
 	private int seq;
 	private int ack;
-	//Ê×²¿Ñ¡Ïî³ÉÔ±
-	private int did;
+    //æŠ¥æ–‡æ•°æ®åŸŸå¼€å§‹ä½???
+    private int datapos;
 	private int keyseq;
 	private String sip;
 	private int sport;
-	//±¨ÎÄÊı¾İÓò¿ªÊ¼Î»ÖÃ
-	private int datapos;
-	//±¨ÎÄ½ÓÊÜÊ±¼äºÍ³¤¶È
+    //æŠ¥æ–‡æ¥å—æ—¶é—´å’Œé•¿???
 	private Date date;
-	private int length;
-	//±ãÓÚÆäËûÀà´¦Àí±¨ÎÄµÄÊ±ºò
+    //ä¾¿äºå…¶ä»–ç±»å¤„ç†æŠ¥æ–‡çš„?????
 	private AppNode appNode;
-	private DevNode devNode;
-	//±¨ÎÄÊı¾İÓò
+    private int length;
+    //æŠ¥æ–‡æ•°æ®???
 	private String data;
+    private DevNode devNode;
+
+    @Override
+    public String toString() {
+        return "æ¥æ”¶åˆ°çš„ï¼šPacketInfo [cmd=" + cmd + ", type=" + type + ", opt=" + opt + ", sort=" + sort + ", sid=" + sid
+                + ", seq=" + seq + ", ack=" + ack + ", did=" + did + ", keyseq=" + keyseq + ", sip=" + sip + ", sport="
+                + sport + ", date=" + date + ", data=" + data + "]";
+    }
 	
 	
 	public String getData() {

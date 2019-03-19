@@ -7,10 +7,14 @@ import cn.smartpolice.workbean.PacketInfo;
 
 public abstract class ProtocolBase {
 
-	PacketInfo revPacket = new PacketInfo();//×ÓĞ­ÒéÌØÓĞÊı¾İ¶ÔÏó
-	abstract void ParsePktProto(PacketInfo packetInfo); //½âÎö×ÓĞ­Òé
-	abstract void ExecProto(); //×ÓĞ­Òé´¦Àí
-	abstract byte[] PackPkt(int i); //×ÓĞ­Òé·â×°Ğ­Òé±¨ÎÄ
-	abstract void SendPkt(byte[] sendPacket); //·¢ËÍÒ»¸öĞ­Òé±¨ÎÄ´¦Àí
+    PacketInfo revPacket = new PacketInfo();//å­åè®®ç‰¹æœ‰æ•°æ®å¯¹???
+
+    abstract void ParsePktProto(PacketInfo packetInfo); //è§£æ????å??
+
+    abstract void ExecProto(); //å­åè®®å¤„???
+
+    abstract byte[] PackPkt(int i); //å­åè®®å°è£…åè®®æŠ¥???
+
+    abstract void SendPkt(byte[] sendPacket); //å‘???ä¸€ä¸ªåè®®æŠ¥æ–‡å¤„??
 
 }

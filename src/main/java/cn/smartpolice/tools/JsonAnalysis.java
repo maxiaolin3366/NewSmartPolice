@@ -12,8 +12,8 @@ public class JsonAnalysis {
 
 	/**
 	 * 
-	 * 
-	 * @param message
+	 *
+	 * @param
 	 * @return json String
 	 */
 	public String getJsonString(Map map) { 
@@ -29,7 +29,7 @@ public class JsonAnalysis {
 
 	}
 	/**
-	 *ֵ
+	 *???
 	 * @param jsonString
 	 * @param key
 	 * @return the value of the key 
@@ -41,10 +41,7 @@ public class JsonAnalysis {
 			return null;
 		}
 		if (jsonString.contains(key)) {
-			//转化为json
-			 JSONObject jobj = JSONObject.fromObject(jsonString) ; 
-			 /*System.out.println("JSONObject:"+jobj);*/
-			 //取的key对应的值
+			JSONObject jobj = JSONObject.fromObject(jsonString);
 			return jobj.getString(key);
 
 		} else {
