@@ -3,14 +3,12 @@ package cn.smartpolice.workbean;
 import java.util.Date;
 
 /**
- * 
- * 
- *
+ *  用户节点
  */
 public class AppNode extends UserNode {
 
-	private DevNode devData;
-	private Date talkDate;
+	private DevNode devData;//最近会话设备节点
+	private Date talkDate; //最近会话时间
 	
 	public DevNode getDevData() {
 		return devData;

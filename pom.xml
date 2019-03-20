@@ -1,6 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>top.maxiaolin</groupId>
 	<artifactId>NewSmartPolice</artifactId>
@@ -11,9 +10,17 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<spring.version>4.3.22.RELEASE</spring.version>
+		<!--  依赖版本  -->
+		<mapper.version>3.4.6</mapper.version>
+		<mysql.version>8.0.15</mysql.version>
 	</properties>
 	<dependencies>
-
+		<!--mybatis逆向生成代码-->
+		<dependency>
+			<groupId>org.mybatis.generator</groupId>
+			<artifactId>mybatis-generator-core</artifactId>
+			<version>1.3.2</version>
+		</dependency>
 		<!-- 1.日志 -->
 		<dependency>
 			<groupId>org.slf4j</groupId>
@@ -30,7 +37,6 @@
 			<artifactId>logback-core</artifactId>
 			<version>1.1.7</version>
 		</dependency>
-
 		<!-- 2.数据库 -->
 		<dependency>
 			<groupId>mysql</groupId>
@@ -38,10 +44,11 @@
 			<version>8.0.15</version>
 		</dependency>
 		<dependency>
-			<groupId>c3p0</groupId>
+			<groupId>com.mchange</groupId>
 			<artifactId>c3p0</artifactId>
-			<version>0.9.1.2</version>
+			<version>0.9.5.2</version>
 		</dependency>
+
 		<!-- https://mvnrepository.com/artifact/org.mybatis/mybatis -->
 		<dependency>
 			<groupId>org.mybatis</groupId>
@@ -121,7 +128,6 @@
 			<artifactId>spring-test</artifactId>
 			<version>${spring.version}</version>
 		</dependency>
-
 		<!-- redis客户端:Jedis -->
 		<dependency>
 			<groupId>redis.clients</groupId>
@@ -138,7 +144,6 @@
 			<artifactId>protostuff-runtime</artifactId>
 			<version>1.0.8</version>
 		</dependency>
-
 		<!-- Map工具类 -->
 		<dependency>
 			<groupId>commons-collections</groupId>
@@ -146,17 +151,21 @@
 			<version>3.2</version>
 		</dependency>
 		<!-- mina -->
-
 		<dependency>
 			<groupId>org.apache.mina</groupId>
 			<artifactId>mina-core</artifactId>
-			<version>2.0.20</version>
+			<version>2.0.13</version>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.apache.mina/mina-integration-spring -->
 		<dependency>
 			<groupId>org.apache.mina</groupId>
 			<artifactId>mina-integration-spring</artifactId>
 			<version>1.1.7</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.mina</groupId>
+			<artifactId>mina-integration-beans</artifactId>
+			<version>2.0.13</version>
 		</dependency>
 
 		<!-- https://mvnrepository.com/artifact/net.sf.json-lib/json-lib -->
@@ -172,14 +181,39 @@
 			<artifactId>fastjson</artifactId>
 			<version>1.2.56</version>
 		</dependency>
-
-
 	</dependencies>
 	<build>
-
 		<finalName>NewSmartPolice</finalName>
-
 		<plugins>
+			<plugin>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-bundle-plugin</artifactId>
+				<extensions>true</extensions>
+			</plugin>
+
+			<!--mybatis逆向工程生成代码插件-->
+			<plugin>
+				<groupId>org.mybatis.generator</groupId>
+				<artifactId>mybatis-generator-maven-plugin</artifactId>
+				<version>1.3.2</version>
+				<configuration>
+					<configurationFile>${basedir}/src/main/resources/generator/generatorConfig.xml</configurationFile>
+					<overwrite>true</overwrite>
+					<verbose>true</verbose>
+				</configuration>
+				<dependencies>
+					<dependency>
+						<groupId>mysql</groupId>
+						<artifactId>mysql-connector-java</artifactId>
+						<version>${mysql.version}</version>
+					</dependency>
+					<dependency>
+						<groupId>tk.mybatis</groupId>
+						<artifactId>mapper</artifactId>
+						<version>${mapper.version}</version>
+					</dependency>
+				</dependencies>
+			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -205,6 +239,5 @@
 				</configuration>
 			</plugin>
 		</plugins>
-
 	</build>
 </project>

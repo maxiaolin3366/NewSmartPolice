@@ -1,17 +1,15 @@
 package cn.smartpolice.net;
 
 
-import java.io.IOException;
-import java.net.InetSocketAddress;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import org.apache.mina.core.service.IoHandler;
-import org.apache.mina.core.session.IdleStatus;
-import org.apache.mina.transport.socket.nio.NioDatagramAcceptor;
 
 
 public class MinaServer {
+    final static Logger logger = LoggerFactory.getLogger(MinaServer.class);
 
-	public static void initMinaServer() {
+	/*public static void initMinaServer() {
 		NioDatagramAcceptor acceptor = new NioDatagramAcceptor();
 		acceptor.setHandler((IoHandler) new NetHandler()); 
 		acceptor.getSessionConfig().setIdleTime(IdleStatus.BOTH_IDLE, 180);
@@ -22,9 +20,10 @@ public class MinaServer {
 			
 	        
 		} catch (IOException e) {
-			System.out.println("Mina Server start for error!"+bindPort);
+			logger.debug("Mina Server start for error ! on port-->"+bindPort);
 			e.printStackTrace();
 		}
-		System.out.println("Mina Server run done!!! on port:"+bindPort); 
-	}
+		logger.debug("Mina Server run done ! on port-->"+bindPort);
+	}*/
+
 }

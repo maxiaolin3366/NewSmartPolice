@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p" xmlns:context="http://www.springframework.org/schema/context"
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+                            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.1.xsd">
+    <!-- 配置整合mybatis过程 -->
+    <!-- 1.配置数据库相关参数properties的属性：${url} -->
+    <context:property-placeholder location="classpath:jdbc.properties"/>
+
+    <!-- 2.数据库连接池 -->
+    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+        <!-- 配置连接池属性 -->
+        <property name="driverClass" value="${jdbc.driver}"/>
+        <property name="jdbcUrl" value="${jdbc.url}"/>
+        <property name="user" value="${jdbc.username}"/>
+        <property name="password" value="${jdbc.password}"/>
+
+        <!-- c3p0连接池的私有属性 -->
+        <property name="maxPoolSize" value="30"/>
+        <property name="minPoolSize" value="10"/>
+        <!-- 关闭连接后不自动commit -->
+        <property name="autoCommitOnClose" value="false"/>
+        <!-- 获取连接超时时间 -->
+        <property name="checkoutTimeout" value="10000"/>
+        <!-- 当获取连接失败重试次数 -->
+        <property name="acquireRetryAttempts" value="2"/>
+    </bean>
+
+    <!-- 3.配置SqlSessionFactory对象 -->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <!-- 注入数据库连接池 -->
+        <property name="dataSource" ref="dataSource"/>
+        <!-- 配置MyBaties全局配置文件:mybatis-config.xml -->
+        <property name="configLocation" value="classpath:mybatis-config.xml"/>
+        <!-- 扫描entity包 使用别名 -->
+        <property name="typeAliasesPackage" value="cn.smartpolice.entity"/>
+        <!-- 扫描sql配置文件:mapper需要的xml文件 -->
+        <property name="mapperLocations" value="classpath:mapper/*.xml"/>
+    </bean>
+
+    <!-- 4.配置扫描Dao接口包，动态实现Dao接口，注入到spring容器中 -->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <!-- 注入sqlSessionFactory -->
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
+        <!-- 给出需要扫描Dao接口包 -->
+        <property name="basePackage" value="cn.smartpolice.dao"/>
+    </bean>
+
+
+    <bean class="org.springframework.beans.factory.config.CustomEditorConfigurer">
+        <property name="customEditors">
+            <map>
+                <entry key="java.net.SocketAddress"
+                       value="org.apache.mina.integration.beans.InetSocketAddressEditor">
+                </entry>
+            </map>
+        </property>
+    </bean>
+    <bean id="ioAcceptor" class="org.apache.mina.transport.socket.nio.NioDatagramAcceptor"
+          init-method="bind" destroy-method="unbind">
+        <!--端口号-->
+        <property name="defaultLocalAddress" value="5678"/>
+        <!--绑定自己实现的handler-->
+        <property name="handler" ref="serverHandler"/>
+        <!--声明过滤器的集合-->
+        <property name="filterChainBuilder" ref="filterChainBuilder"/>
+    </bean>
+
+    <bean id="filterChainBuilder"
+          class="org.apache.mina.core.filterchain.DefaultIoFilterChainBuilder">
+        <property name="filters">
+            <map>
+                <!--mina自带的线程池filter-->
+                <entry key="executor" value-ref="executorFilter"/>
+                <entry key="mdcInjectionFilter" value-ref="mdcInjectionFilter"/>
+                <!--自己实现的编解码器filter-->
+                <entry key="codecFilter" value-ref="codecFilter"/>
+                <!--日志的filter-->
+                <entry key="loggingFilter" value-ref="loggingFilter"/>
+                <!--心跳filter-->
+                <!-- <entry key="keepAliveFilter" value-ref="keepAliveFilter" />-->
+            </map>
+        </property>
+    </bean>
+    <!-- executorFilter多线程处理 -->
+    <bean id="executorFilter" class="org.apache.mina.filter.executor.ExecutorFilter"/>
+    <bean id="mdcInjectionFilter" class="org.apache.mina.filter.logging.MdcInjectionFilter">
+        <constructor-arg value="remoteAddress"/>
+    </bean>
+
+    <!--日志-->
+    <bean id="loggingFilter" class="org.apache.mina.filter.logging.LoggingFilter"/>
+
+    <!--编解码-->
+    <bean id="codecFilter" class="org.apache.mina.filter.codec.ProtocolCodecFilter">
+        <constructor-arg>
+            <!--构造函数的参数传入自己实现的对象-->
+            <bean class="cn.smartpolice.net.MyCodeFactory"></bean>
+        </constructor-arg>
+    </bean>
+
+    <!--心跳检测filter-->
+    <bean id="keepAliveFilter" class="org.apache.mina.filter.keepalive.KeepAliveFilter">
+        <!--构造函数的第一个参数传入自己实现的工厂-->
+        <constructor-arg>
+            <bean class="cn.smartpolice.net.MyKeepAliveMessageFactory"></bean>
+        </constructor-arg>
+        <!--第二个参数需要的是IdleStatus对象，value值设置为读写空闲-->
+        <constructor-arg type="org.apache.mina.core.session.IdleStatus" value="BOTH_IDLE">
+        </constructor-arg>
+        <!--心跳频率，不设置则默认60s  -->
+        <property name="requestInterval" value="5"/>
+        <!--心跳超时时间，不设置则默认30s    -->
+        <property name="requestTimeout" value="10"/>
+        <!--不设置默认false-->
+        <property name="forwardEvent" value="true"/>
+    </bean>
+
+    <!--自己实现的handler-->
+    <bean id="serverHandler" class="cn.smartpolice.net.NetHandler"/>
+    <bean id="SpringApplicationContext" class="cn.smartpolice.tools.ApplicationContextHelper"></bean>
+
+</beans>

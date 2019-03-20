@@ -8,7 +8,7 @@ public class NetServerListener implements ServletContextListener{
 
     public void contextInitialized(ServletContextEvent sce) {
 		// TODO Auto-generated method stub
-		MinaServer.initMinaServer();
+//		MinaServer.initMinaServer();
 	}
 
 

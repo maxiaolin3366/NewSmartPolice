@@ -1,39 +1,57 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPEgeneratorConfiguration
-                PUBLIC"-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
-                "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
 
-        <generatorConfiguration>
-            <properties resource="jdbc.properties"/>
+<generatorConfiguration>
+    <context id="testTables" targetRuntime="MyBatis3">
+        <commentGenerator>
+            <!-- 是否去除自动生成的注释 true：是 ： false:否 -->
+            <property name="suppressAllComments" value="true"/>
+        </commentGenerator>
+        <!--数据库连接的信息：驱动类、连接地址、用户名、密码 -->
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+                        connectionURL="jdbc:mysql://localhost:3306/smartpolice"
+                        userId="root"
+                        password="root">
+        </jdbcConnection>
+        <!-- 默认false，把JDBC DECIMAL 和 NUMERIC 类型解析为 Integer，为 true时把JDBC DECIMAL 和
+            NUMERIC 类型解析为java.math.BigDecimal -->
+        <javaTypeResolver>
+            <property name="forceBigDecimals" value="false"/>
+        </javaTypeResolver>
 
-            <context id="Mysql" targetRuntime="MyBatis3Simple" defaultModelType="flat">
-                <property name="beginningDelimiter" value="`"/>
-                <property name="endingDelimiter" value="`"/>
+        <!-- targetProject:生成PO类的位置 -->
+        <javaModelGenerator targetPackage="cn.smartpolice.entity"
+                            targetProject="./src/main/java">
+            <!-- enableSubPackages:是否让schema作为包的后缀 -->
+            <property name="enableSubPackages" value="false"/>
+            <!-- 从数据库返回的值被清理前后的空格 -->
+            <property name="trimStrings" value="true"/>
+        </javaModelGenerator>
+        <!-- targetProject:mapper映射文件生成的位置 -->
+        <sqlMapGenerator targetPackage="/mapper"
+                         targetProject="./src/main/resources">
+            <!-- enableSubPackages:是否让schema作为包的后缀 -->
+            <property name="enableSubPackages" value="false"/>
+        </sqlMapGenerator>
+        <!-- targetPackage：mapper接口生成的位置 -->
+        <javaClientGenerator type="XMLMAPPER"
+                             targetPackage="cn.smartpolice.dao"
+                             targetProject="./src/main/java">
+            <!-- enableSubPackages:是否让schema作为包的后缀 -->
+            <property name="enableSubPackages" value="false"/>
+        </javaClientGenerator>
+        <!-- 指定数据库表 -->
+        <table schema="" tableName="admin_log"></table>
+        <table schema="" tableName="company_info"></table>
+        <table schema="" tableName="connect"></table>
+        <table schema="" tableName="device_inf"></table>
+        <table schema="" tableName="device_list"></table>
+        <table schema="" tableName="user_inf"></table>
+        <table schema="" tableName="user_log"></table>
+        <table schema="" tableName="device_log"></table>
 
 
-                <!--支持序列化-->
-                <plugin type="org.mybatis.generator.plugins.SerializablePlugin"></plugin>
-
-                <plugin type="${mapper.plugin}">
-                    <property name="mappers" value="${mapper.Mapper}"/>
-                    <property name="forceAnnotation" value="${mapper.forceAnnotation}" />
-                </plugin>
-
-                <jdbcConnection driverClass="${jdbc.driver}"
-                                connectionURL="${jdbc.url}"
-                                userId="${jdbc.user}"
-                                password="${jdbc.password}">
-                </jdbcConnection>
-
-                <javaModelGenerator targetPackage="${targetModelPackage}" targetProject="${targetJavaProject}"/>
-
-                <sqlMapGenerator targetPackage="${targetXMLPackage}" targetProject="${targetResourcesProject}"/>
-
-                <javaClientGenerator targetPackage="${targetMapperPackage}" targetProject="${targetJavaProject}"
-                                     type="XMLMAPPER"/>
-
-                <table tableName="%">
-                    <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
-                </table>
-            </context>
-        </generatorConfiguration>
+    </context>
+</generatorConfiguration>
