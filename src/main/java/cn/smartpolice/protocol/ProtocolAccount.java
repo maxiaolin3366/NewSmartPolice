@@ -16,7 +16,6 @@ import cn.smartpolice.tools.ApplicationContextHelper;
 import org.apache.mina.core.buffer.IoBuffer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import cn.smartpolice.entity.DeviceLog;
 import cn.smartpolice.entity.UserLog;
@@ -25,9 +24,6 @@ import cn.smartpolice.workbean.PacketInfo;
 import cn.smartpolice.workbean.SysInfo;
 import cn.smartpolice.workbean.UserNode;
 import net.sf.json.JSONObject;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.stereotype.Component;
 import sun.misc.BASE64Decoder;
 
 /**
@@ -35,19 +31,13 @@ import sun.misc.BASE64Decoder;
  * cmd=2  账户管理协议
  * 注销账号还有很多东西未定义，故没有优化
  */
-@Component
 public class ProtocolAccount extends ProtocolBase implements ConstParam {
 
     final Logger logger = LoggerFactory.getLogger(this.getClass());
-    private DeviceInfMapper deviceDao;
-
-    @Autowired
-    private DeviceLogMapper devLogDao;
-    @Autowired
-    private UserInfMapper userDao;
-    @Autowired
-    private UserLogMapper userLogDao;
-
+    private DeviceInfMapper deviceDao = ApplicationContextHelper.getBean(DeviceInfMapper.class);
+    private DeviceLogMapper devLogDao = ApplicationContextHelper.getBean(DeviceLogMapper.class);
+    private UserInfMapper userDao = ApplicationContextHelper.getBean(UserInfMapper.class);
+    private UserLogMapper userLogDao = ApplicationContextHelper.getBean(UserLogMapper.class);
     private RegAccount regAccount = new RegAccount();
     private RegAppAccount regAppAccount = new RegAppAccount();
     private RegDevAccount regDevAccount = new RegDevAccount();
@@ -557,7 +547,7 @@ public class ProtocolAccount extends ProtocolBase implements ConstParam {
             if (infoComplete) {
                 //TODO
                 logger.debug("注册信息完整-->");
-                userDao = ApplicationContextHelper.getBean(UserInfMapper.class);
+
                 UserInf userInf = userDao.selectUserByUserName(regAccount.getUser());//userDao.findAppuserByName(user);
                 logger.info("查询数据库中是否用户账户是否重复-->");
                 if (userInf != null) {

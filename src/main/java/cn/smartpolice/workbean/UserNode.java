@@ -1,9 +1,12 @@
 package cn.smartpolice.workbean;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 
 import org.apache.mina.core.session.IoSession;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 
@@ -11,7 +14,7 @@ import org.apache.mina.core.session.IoSession;
  *
  */
 public class UserNode {
-
+    final Logger logger = LoggerFactory.getLogger(this.getClass());
 	private String ip;
 	private int port;
 	private String Account;
@@ -71,6 +74,7 @@ public class UserNode {
 	}
 
     public void setRevPktDate(Date revPktDate) {
+        logger.debug("更新最近报文接收时间-->");
 		this.revPktDate = revPktDate;
 	}
 
@@ -128,5 +132,24 @@ public class UserNode {
 
     public void setLink(int link) {
         this.link = link;
+    }
+
+    @Override
+    public String toString() {
+        return "UserNode{" +
+                "ip='" + ip + '\'' +
+                ", port=" + port +
+                ", Account='" + Account + '\'' +
+                ", id=" + id +
+                ", loginDate=" + loginDate +
+                ", revPktDate=" + revPktDate +
+                ", revPktId=" + revPktId +
+                ", sntPktId=" + sntPktId +
+                ", sntPktDate=" + sntPktDate +
+                ", lastPacketInfo=" + Arrays.toString(lastPacketInfo) +
+                ", ioSession=" + ioSession +
+                ", state=" + state +
+                ", link=" + link +
+                '}';
     }
 }

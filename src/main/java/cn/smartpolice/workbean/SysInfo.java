@@ -2,6 +2,7 @@ package cn.smartpolice.workbean;
 
 import cn.smartpolice.protocol.ProtocolAccount;
 import cn.smartpolice.protocol.ProtocolBase;
+import cn.smartpolice.protocol.ProtocolLogin;
 import cn.smartpolice.protocol.ProtocolTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -19,10 +20,10 @@ public class SysInfo {
     private static SysInfo instance;
     private static UIUserNode uiUserNode;
     private static SysStatInfo sysStatInfo;
-    private static ProtocolBase[] protocolBases = {new ProtocolTest(), new ProtocolTest(), new ProtocolAccount()};
+    private static ProtocolBase[] protocolBases = {new ProtocolTest(), new ProtocolLogin(), new ProtocolAccount()};
     private static Set<UserNode> userNodeQueue = Collections.synchronizedSet(new HashSet<UserNode>());  //节点队列
     private FileUsing fileUsing;
-    private SysCfgInfo sysCfgInfo;
+    private static SysCfgInfo sysCfgInfo;
 
     private SysInfo() {
     }
@@ -50,7 +51,7 @@ public class SysInfo {
         return protocolBases;
     }
 
-    public SysCfgInfo getSysCfgInfo() {
+    public static SysCfgInfo getSysCfgInfo() {
         return sysCfgInfo;
     }
 

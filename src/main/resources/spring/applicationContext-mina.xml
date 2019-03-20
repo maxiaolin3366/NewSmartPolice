@@ -120,5 +120,4 @@
     <!--自己实现的handler-->
     <bean id="serverHandler" class="cn.smartpolice.net.NetHandler"/>
     <bean id="SpringApplicationContext" class="cn.smartpolice.tools.ApplicationContextHelper"></bean>
-
 </beans>
