@@ -42,6 +42,7 @@ public class ProtocolLogin extends ProtocolBase implements ConstParam {
     int errorPktState; // 标记不同错误报文（一种是登陆请求信息不完整或错误(errorState=0)，一种是密码验证错误(errorState=1)）
     int random; // 随机数
     int uLink;
+    int userNodeLink;
     UserNode userNode;
     private DeviceLogMapper deviceLogDao = ApplicationContextHelper.getBean(DeviceLogMapper.class);
     private UserLogMapper usersLogDao = ApplicationContextHelper.getBean(UserLogMapper.class);
@@ -58,6 +59,9 @@ public class ProtocolLogin extends ProtocolBase implements ConstParam {
             snum = jsonAnalysis.getValue(data, "SNUM");
             sver = jsonAnalysis.getValue(data, "SVER");
             user = jsonAnalysis.getValue(data, "USER");
+            if (jsonAnalysis.getValue(data, "LINK") != null) {
+                userNodeLink = Integer.parseInt(jsonAnalysis.getValue(data, "LINK"));
+            }
         }
         // 登录验证 登出验证只有user
         if (revPacket.getType() == ConstParam.TYPE_3) {
@@ -66,6 +70,9 @@ public class ProtocolLogin extends ProtocolBase implements ConstParam {
         }
         if (revPacket.getType() == ConstParam.TYPE_5) {
             user = jsonAnalysis.getValue(data, "USER");
+            if (jsonAnalysis.getValue(data, "LINK") != null) {
+                userNodeLink = Integer.parseInt(jsonAnalysis.getValue(data, "LINK"));
+            }
         }
         ExecProto();
     }
@@ -173,37 +180,41 @@ public class ProtocolLogin extends ProtocolBase implements ConstParam {
 
             }
             // 节点掉线时，节点发登陆请求时，队列中的节点状态state=2时直接返回登录成功
-            if (userNode.getState() == ConstParam.LOGIN_STATE_2 && revPacket.getSort() == ConstParam.SORT_2) {
-                logger.debug("设备已成功登陆，直接返回登陆成功报文-->");
-                // 在设备登录信息表插入一条记录 构造一个userLog对象插入
-                DeviceLog devLog = new DeviceLog();
-                Date logindate = new Date();
-                devLog.setDeviceid(userNode.getId());
-                devLog.setDate(logindate);
-                devLog.setIpaddr(userNode.getIp());
-                devLog.setPort(userNode.getPort());
-                devLog.setOperate(ConstParam.LOGIN_OPERATE_1);
-                deviceLogDao.insert(devLog); // 在设备登录信息表插入
-                byte[] successPacket = PackPkt(ConstParam.SENT_PKT_TYPE_3); // 构造登陆成功的报文
-                SendPkt(successPacket);// 如果当前用户状态为2（已经登录成功）直接返回登录成功报文
-                userNode.setLastPacketInfo(successPacket);
-                return;
+            if (userNode.getState() == ConstParam.LOGIN_STATE_2 && revPacket.getSort() == ConstParam.SORT_2 && userNodeLink != 0) {
+                if (userNodeLink == userNode.getLink()) {
+                    logger.debug("设备已成功登陆，直接返回登陆成功报文-->");
+                    // 在设备登录信息表插入一条记录 构造一个userLog对象插入
+                    DeviceLog devLog = new DeviceLog();
+                    Date logindate = new Date();
+                    devLog.setDeviceid(userNode.getId());
+                    devLog.setDate(logindate);
+                    devLog.setIpaddr(userNode.getIp());
+                    devLog.setPort(userNode.getPort());
+                    devLog.setOperate(ConstParam.LOGIN_OPERATE_1);
+                    deviceLogDao.insert(devLog); // 在设备登录信息表插入
+                    byte[] successPacket = PackPkt(ConstParam.SENT_PKT_TYPE_3); // 构造登陆成功的报文
+                    SendPkt(successPacket);// 如果当前用户状态为2（已经登录成功）直接返回登录成功报文
+                    userNode.setLastPacketInfo(successPacket);
+                    return;
+                }
             }
-            if (userNode.getState() == ConstParam.LOGIN_STATE_2 && revPacket.getSort() == ConstParam.SORT_0) {
-                logger.debug("用户已成功登陆，直接返回登陆成功报文-->");
-                // 在用户登录信息表插入一条记录 构造一个userLog对象插入
-                UserLog userLog = new UserLog();
-                Date logindate = new Date();
-                userLog.setUserid(userNode.getId());
-                userLog.setDate(logindate);
-                userLog.setIpaddr(userNode.getIp());
-                userLog.setPort(userNode.getPort());
-                userLog.setOperate(ConstParam.LOGIN_OPERATE_1);
-                usersLogDao.insert(userLog); // 在用户登录信息表插入
-                byte[] successPacket = PackPkt(ConstParam.SENT_PKT_TYPE_3); // 构造登陆成功的报文
-                userNode.setLastPacketInfo(successPacket);
-                SendPkt(successPacket);// 如果当前用户状态为2（已经登录成功）直接返回登录成功报文
-                return;
+            if (userNode.getState() == ConstParam.LOGIN_STATE_2 && revPacket.getSort() == ConstParam.SORT_0 && userNodeLink != 0) {
+                if (userNodeLink == userNode.getLink()) {
+                    logger.debug("用户已成功登陆，直接返回登陆成功报文-->");
+                    // 在用户登录信息表插入一条记录 构造一个userLog对象插入
+                    UserLog userLog = new UserLog();
+                    Date logindate = new Date();
+                    userLog.setUserid(userNode.getId());
+                    userLog.setDate(logindate);
+                    userLog.setIpaddr(userNode.getIp());
+                    userLog.setPort(userNode.getPort());
+                    userLog.setOperate(ConstParam.LOGIN_OPERATE_1);
+                    usersLogDao.insert(userLog); // 在用户登录信息表插入
+                    byte[] successPacket = PackPkt(ConstParam.SENT_PKT_TYPE_3); // 构造登陆成功的报文
+                    userNode.setLastPacketInfo(successPacket);
+                    SendPkt(successPacket);// 如果当前用户状态为2（已经登录成功）直接返回登录成功报文
+                    return;
+                }
             }
         }
 
@@ -334,35 +345,40 @@ public class ProtocolLogin extends ProtocolBase implements ConstParam {
 
         // 登出报文
         if (revPacket.getType() == ConstParam.TYPE_5) {
-            System.out.println("转到登出报文");
-            if (user.equals(userNode.getAccount())) {
-                if (revPacket.getSort() == ConstParam.SORT_2) {
-                    SysInfo.getInstance().removeUserNode(userNode);
-                    System.out.println("登出，删除节点");
-                    DeviceLog devLog = new DeviceLog();
-                    devLog.setDeviceid(userNode.getId());
-                    devLog.setDate(new Date());
-                    devLog.setIpaddr(userNode.getIp());
-                    devLog.setPort(userNode.getPort());
-                    devLog.setOperate(ConstParam.LOGIN_OPERATE_0);
-                    deviceLogDao.insert(devLog);
-                }
-                if (revPacket.getSort() == ConstParam.SORT_0) {
-                    SysInfo.getInstance().removeUserNode(userNode);
-                    System.out.println("登出，删除节点");
-                    UserLog userLog = new UserLog();
-                    Date logindate = new Date();
-                    userLog.setUserid(userNode.getId());
-                    userLog.setDate(logindate);
-                    userLog.setIpaddr(userNode.getIp());
-                    userLog.setPort(userNode.getPort());
-                    userLog.setOperate(ConstParam.LOGIN_OPERATE_0);
-                    usersLogDao.insert(userLog); // 在用户登录信息表插入
+            logger.debug("转到登出报文-->");
+            if (user.equals(userNode.getAccount()) && userNodeLink != 0) {
+                logger.debug("用户名检查正确。LINK不为空-->");
+                if (userNodeLink == userNode.getLink()) {
+                    logger.debug("LINK比对正确-->");
+                    if (revPacket.getSort() == ConstParam.SORT_2) {
+                        SysInfo.getInstance().removeUserNode(userNode);
+                        logger.debug("登出信息正确，删除设备节点-->");
+                        DeviceLog devLog = new DeviceLog();
+                        devLog.setDeviceid(userNode.getId());
+                        devLog.setDate(new Date());
+                        devLog.setIpaddr(userNode.getIp());
+                        devLog.setPort(userNode.getPort());
+                        devLog.setOperate(ConstParam.LOGIN_OPERATE_0);
+                        deviceLogDao.insert(devLog);
+                    } else if (revPacket.getSort() == ConstParam.SORT_0) {
+                        SysInfo.getInstance().removeUserNode(userNode);
+                        logger.debug("登出信息正确，删除用户节点-->");
+                        UserLog userLog = new UserLog();
+                        Date logindate = new Date();
+                        userLog.setUserid(userNode.getId());
+                        userLog.setDate(logindate);
+                        userLog.setIpaddr(userNode.getIp());
+                        userLog.setPort(userNode.getPort());
+                        userLog.setOperate(ConstParam.LOGIN_OPERATE_0);
+                        usersLogDao.insert(userLog); // 在用户登录信息表插入
+                    } else {
+                        logger.debug("登出类型检查不正确，不做任何处理-->");
+                    }
                 } else {
-                    System.out.println("信息正确  删除节点");
+                    logger.debug("服务器存在的LINK与用户发送的不一致，不做处理-->");
                 }
             } else {
-                System.out.println("信息不正确  未处理");
+                logger.debug("用户名检查不正确或LINK==0，不做任何处理-->");
             }
         }
         // 保活报文
@@ -380,7 +396,7 @@ public class ProtocolLogin extends ProtocolBase implements ConstParam {
                 }
                 byte[] keepAlivePkt = PackPkt(ConstParam.SENT_PKT_TYPE_4);
                 userNode.setLastPacketInfo(keepAlivePkt);
-                System.out.print(keepAlivePkt.toString());
+                logger.debug(keepAlivePkt.toString());
                 SendPkt(keepAlivePkt);
                 return;
             }

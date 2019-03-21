@@ -55,7 +55,11 @@ public class ProtocolProc {
                 // 进入具体协议处理
                 logger.debug("协议检查无误，进入具体协议解析类-->");
                 SysInfo.getProtocolBases()[packetInfo.getCmd()].ParsePktProto(packetInfo);
+            } else {
+                logger.debug("协议检查失败，本次报文不做处理-->");
             }
+        } else {
+            logger.debug("协议格式不正确，解析失败，不做处理-->");
         }
     }
 
@@ -184,76 +188,75 @@ public class ProtocolProc {
 
         if (userNode == null) {
             logger.debug("没有节点-->");
-		if (packetInfo.getCmd() == ConstParam.CMD_1 && packetInfo.getType() == ConstParam.TYPE_1) {
-            // 如果是dev登陆则创建新的dev节点
-            logger.debug("登陆请求-->");
-			if (packetInfo.getSort() == ConstParam.SORT_2) {
-                logger.debug("设备登陆请求-->");
-                DeviceInf devinf = deviceDao.selectDeviceBySid(packetInfo.getSid());
-				if (devinf != null) {
-                    logger.debug("该设备已注册-->");
-					String ip = ((InetSocketAddress) packetInfo.getIoSession().getRemoteAddress()).getAddress()
-							.getHostAddress();
-					int port = ((InetSocketAddress) packetInfo.getIoSession().getRemoteAddress()).getPort();
-					DevNode devNode = new DevNode(); // 创建节点
-					Random rando = new Random();
-                    int random = rando.nextInt(999999) % 900000 + 100000; // 产生6位随机数
-					devNode.setLink(random);
-					devNode.setIp(ip);
-					devNode.setPort(port);
-					devNode.setAccount(devinf.getUsername());
-					devNode.setId(devinf.getDeviceid());
-					devNode.setRevPktDate(new Date());
-					devNode.setIoSession(packetInfo.getIoSession());
-					devNode.setRevPktId(packetInfo.getSeq());
-                    // 刚创建的节点的登录状态置0，表示还未验证
-					devNode.setState(ConstParam.LOGIN_STATE_0);
-                    // 将节点信息添加到报文 仅仅为了在ProtocolLogin中取获取节点id (
-					packetInfo.setDevNode(devNode);
-                    // 将节点添加到队列 在登录处理中从全局队列中取
-					SysInfo.getInstance().addUserNode(devNode);
-                    logger.debug("创建节点-->");
-                    logger.debug(devNode.toString());
-					return true;
-				} else
-					return false;
-			}
-			else if (packetInfo.getSort() == ConstParam.SORT_0) {
-                logger.debug("用户登陆-->");
-                UserInf appInf = userDao.selectUserBySid(packetInfo.getSid());
-				if (appInf != null) {
-                    logger.debug("该用户已注册-->");
-					String ip = ((InetSocketAddress) packetInfo.getIoSession().getRemoteAddress()).getAddress()
-							.getHostAddress();
-					int port = ((InetSocketAddress) packetInfo.getIoSession().getRemoteAddress()).getPort();
-					AppNode appNode = new AppNode(); // 创建节点
-					Random rando = new Random();
-					int random = rando.nextInt(99999) % 90000 + 10000; // 产生??????5位随机数
-					appNode.setLink(random);
-					appNode.setIp(ip);
-					appNode.setPort(port);
-					appNode.setAccount(appInf.getUsername());
-                    appNode.setId(appInf.getUserid());
-					appNode.setRevPktDate(new Date());
-					appNode.setRevPktId(packetInfo.getSeq());
-					appNode.setIoSession(packetInfo.getIoSession());
-					appNode.setState(ConstParam.LOGIN_STATE_0);
-					packetInfo.setAppNode(appNode);
-					SysInfo.getInstance().addUserNode(appNode); // 将节点添加到队列
-                    logger.debug("创建节点-->");
-                    logger.debug(appNode.toString());
-					return true;
-				} else {
-					return false;
-				}
-			} else {
-                logger.debug("不支持其他客户类型-->");
-				return false;
-			}
-		} else {
-            logger.debug("未登录时无节点，其他操作无法进行-->");
-			return false;
-        }
+            if (packetInfo.getCmd() == ConstParam.CMD_1 && packetInfo.getType() == ConstParam.TYPE_1) {
+                // 如果是dev登陆则创建新的dev节点
+                logger.debug("登陆请求-->");
+                if (packetInfo.getSort() == ConstParam.SORT_2) {
+                    logger.debug("设备登陆请求-->");
+                    DeviceInf devinf = deviceDao.selectDeviceBySid(packetInfo.getSid());
+                    if (devinf != null) {
+                        logger.debug("该设备已注册-->");
+                        String ip = ((InetSocketAddress) packetInfo.getIoSession().getRemoteAddress()).getAddress()
+                                .getHostAddress();
+                        int port = ((InetSocketAddress) packetInfo.getIoSession().getRemoteAddress()).getPort();
+                        DevNode devNode = new DevNode(); // 创建节点
+                        Random rando = new Random();
+                        int random = rando.nextInt(999999) % 900000 + 100000; // 产生6位随机数
+                        devNode.setLink(random);
+                        devNode.setIp(ip);
+                        devNode.setPort(port);
+                        devNode.setAccount(devinf.getUsername());
+                        devNode.setId(devinf.getDeviceid());
+                        devNode.setRevPktDate(new Date());
+                        devNode.setIoSession(packetInfo.getIoSession());
+                        devNode.setRevPktId(packetInfo.getSeq());
+                        // 刚创建的节点的登录状态置0，表示还未验证
+                        devNode.setState(ConstParam.LOGIN_STATE_0);
+                        // 将节点信息添加到报文 仅仅为了在ProtocolLogin中取获取节点id (
+                        packetInfo.setDevNode(devNode);
+                        // 将节点添加到队列 在登录处理中从全局队列中取
+                        SysInfo.getInstance().addUserNode(devNode);
+                        logger.debug("创建节点-->");
+                        logger.debug(devNode.toString());
+                        return true;
+                    } else
+                        return false;
+                } else if (packetInfo.getSort() == ConstParam.SORT_0) {
+                    logger.debug("用户登陆-->");
+                    UserInf appInf = userDao.selectUserBySid(packetInfo.getSid());
+                    if (appInf != null) {
+                        logger.debug("该用户已注册-->");
+                        String ip = ((InetSocketAddress) packetInfo.getIoSession().getRemoteAddress()).getAddress()
+                                .getHostAddress();
+                        int port = ((InetSocketAddress) packetInfo.getIoSession().getRemoteAddress()).getPort();
+                        AppNode appNode = new AppNode(); // 创建节点
+                        Random rando = new Random();
+                        int random = rando.nextInt(99999) % 90000 + 10000; // 产生??????5位随机数
+                        appNode.setLink(random);
+                        appNode.setIp(ip);
+                        appNode.setPort(port);
+                        appNode.setAccount(appInf.getUsername());
+                        appNode.setId(appInf.getUserid());
+                        appNode.setRevPktDate(new Date());
+                        appNode.setRevPktId(packetInfo.getSeq());
+                        appNode.setIoSession(packetInfo.getIoSession());
+                        appNode.setState(ConstParam.LOGIN_STATE_0);
+                        packetInfo.setAppNode(appNode);
+                        SysInfo.getInstance().addUserNode(appNode); // 将节点添加到队列
+                        logger.debug("创建节点-->");
+                        logger.debug(appNode.toString());
+                        return true;
+                    } else {
+                        return false;
+                    }
+                } else {
+                    logger.debug("不支持其他客户类型-->");
+                    return false;
+                }
+            } else {
+                logger.debug("未登录时无节点，其他操作无法进行-->");
+                return false;
+            }
         }
 
         // 1.请求验证（登录请求后返回请求验证的报文）2.登录请求（还没来得及删除全局队列中的节点），3.保活报文从这儿进
