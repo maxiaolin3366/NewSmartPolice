@@ -56,9 +56,11 @@ public class ProtocolProc {
                 logger.debug("协议检查无误，进入具体协议解析类-->");
                 SysInfo.getProtocolBases()[packetInfo.getCmd()].ParsePktProto(packetInfo);
             } else {
+                ios.closeNow();
                 logger.debug("协议检查失败，本次报文不做处理-->");
             }
         } else {
+            ios.closeNow();
             logger.debug("协议格式不正确，解析失败，不做处理-->");
         }
     }

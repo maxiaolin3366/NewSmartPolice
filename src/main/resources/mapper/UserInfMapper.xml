@@ -115,6 +115,9 @@
         </if>
     </delete>
     <insert id="insert" parameterType="cn.smartpolice.entity.UserInf">
+        <selectKey keyProperty="userid" order="AFTER" resultType="java.lang.Integer">
+            select LAST_INSERT_ID()
+        </selectKey>
         insert into user_inf (userid, username, password,
         sets, regdate, authority,
         birth, name, sex, type,

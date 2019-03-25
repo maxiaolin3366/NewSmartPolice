@@ -37,7 +37,9 @@ public class SysInfo {
     }
 
     public static SysInfo getInstance() {
-        instance = new SysInfo();
+        if (instance == null) {
+            instance = new SysInfo();
+        }
         return instance;
     }
 

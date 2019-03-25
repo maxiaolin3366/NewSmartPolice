@@ -60,7 +60,7 @@
     <bean id="ioAcceptor" class="org.apache.mina.transport.socket.nio.NioDatagramAcceptor"
           init-method="bind" destroy-method="unbind">
         <!--端口号-->
-        <property name="defaultLocalAddress" value="5678"/>
+        <property name="defaultLocalAddress" value="9999"/>
         <!--绑定自己实现的handler-->
         <property name="handler" ref="serverHandler"/>
         <!--声明过滤器的集合-->

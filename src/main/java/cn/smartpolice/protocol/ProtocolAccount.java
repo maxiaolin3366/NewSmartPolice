@@ -569,7 +569,8 @@ public class ProtocolAccount extends ProtocolBase implements ConstParam {
                     app.setType(regAppAccount.getAppType());
                     app.setMail(regAppAccount.getAppMail());
                     app.setMphone(regAppAccount.getAppMphone());
-                    sid = userDao.insert(app);
+                    userDao.insert(app);
+                    sid = app.getUserid();
                     byte[] successPacket = PackPkt(ConstParam.SENT_PKT_TYPE_3);
                     SendPkt(successPacket);
                 }
