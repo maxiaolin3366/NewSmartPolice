@@ -32,7 +32,6 @@ public class ManagerAdminController {
 		try {
 			adminLogService.addAdminLog(adminlog);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
             logger.debug("insert adminlog failed!");
         }

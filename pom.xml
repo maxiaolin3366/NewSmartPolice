@@ -230,7 +230,7 @@
 					<scanIntervalSeconds>10</scanIntervalSeconds>
 					<connectors>
 						<connector implementation="org.mortbay.jetty.bio.SocketConnector">
-							<port>8080</port>
+                            <port>8090</port>
 							<maxIdleTime>60000</maxIdleTime>
 						</connector>
 					</connectors>

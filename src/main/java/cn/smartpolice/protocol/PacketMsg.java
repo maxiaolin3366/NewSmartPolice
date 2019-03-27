@@ -107,13 +107,10 @@ public class PacketMsg implements ConstParam {
                 dis.write(packetBodyJsonByte);
             }
         } catch (UnsupportedEncodingException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (Exception e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         packets = ips.toByteArray();

@@ -15,7 +15,6 @@ public class ProtocolTest extends ProtocolBase {
 
     @Override
     public void ParsePktProto(PacketInfo packetInfo) {
-        // TODO Auto-generated method stub
         logger.debug("进入联通测试协议-->开始协议解析");
         this.revPacket = packetInfo;
         this.ExecProto();
@@ -23,7 +22,6 @@ public class ProtocolTest extends ProtocolBase {
 
     @Override
     public void ExecProto() {
-        // TODO Auto-generated method stub
         logger.debug("处理联通测试协议-->");
         byte[] packet = PackPkt(1);
         this.SendPkt(packet);
@@ -31,7 +29,6 @@ public class ProtocolTest extends ProtocolBase {
 
     @Override
     public byte[] PackPkt(int i) {
-        // TODO Auto-generated method stub
         PacketMsg msg = new PacketMsg();
         msg.setCmd(ConstParam.CMD_0);
         msg.setType(ConstParam.TYPE_2);

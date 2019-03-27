@@ -20,7 +20,6 @@ public class AdminLogService implements AdminLogServiceI {
     }
 
     public void addAdminLog(AdminLog adminlog) throws Exception {
-        // TODO Auto-generated method stub
         adminLogDao.insert(adminlog);
     }
 

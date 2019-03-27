@@ -214,7 +214,6 @@ public class ProtocolAccount extends ProtocolBase implements ConstParam {
                 byte[] phoneBytes = mphone.getBytes();
                 // dev
                 if (revPacket.getSort() == ConstParam.SORT_2) {
-                    //todo 已更改 需要测试
                     DeviceInf dev = deviceDao.selectDeviceBySid(revPacket.getSid());//deviceDao.findDevByID(revPacket.getSid());
                     // 存在dev且state！=0
                     if (dev != null && Integer.parseInt(dev.getState()) != 0) {
@@ -242,7 +241,6 @@ public class ProtocolAccount extends ProtocolBase implements ConstParam {
                             devLogDao = (DeviceLogMapper) ApplicationContextHelper.getBean("deviceLogMapper");
                             devLogDao.insert(devLog);
                             // 置device_inf表中state=0
-                            //todo 已更改 需要测试
                             deviceDao.changeStateToZeroById(revPacket.getSid());
                             // 删除全局数据中的节点
 //                            DevNode devNode = (DevNode)userNode;//SysInfo.getInstance().getDevNodeById(revPacket.getSid())
@@ -262,7 +260,6 @@ public class ProtocolAccount extends ProtocolBase implements ConstParam {
                         // dev == null不处理 state=0返回已注销
                         if (Integer.parseInt(dev.getState()) == 0) {
                             // 通过查找operate=-1和deviceid 两个条件一起查找
-                            //todo
                             offDate = devLogDao.selectOffDateByIdAndOprate(revPacket.getSid(), ConstParam.LOGIN_OPERATE_2);
                             byte[] packet = PackPkt(ConstParam.SENT_PKT_TYPE_2);
                             SendPkt(packet);
@@ -272,7 +269,6 @@ public class ProtocolAccount extends ProtocolBase implements ConstParam {
                 }
                 // app
                 if (revPacket.getSort() == ConstParam.SORT_0) {
-                    //todo
                     UserInf app = userDao.selectUserBySid(revPacket.getSid());//userDao.findAppuserByID(revPacket.getSid());
                     // 存在dev且state！=0
                     if (app != null && Integer.parseInt(app.getState()) != 0) {
@@ -294,11 +290,9 @@ public class ProtocolAccount extends ProtocolBase implements ConstParam {
                             int port = ((InetSocketAddress) revPacket.getIoSession().getRemoteAddress()).getPort();
                             userLog.setIpaddr(ip);
                             userLog.setPort(port);
-                            //todo oprate 需要更改
                             userLog.setOperate(ConstParam.LOGIN_OPERATE_2);
                             userLogDao.insert(userLog);
                             // 置device_inf表中state=0
-                            //todo
                             userDao.changeStateToZeroById(revPacket.getSid());
                             // 删除全局数据中的节点
                             //AppNode appNode = (AppNode) SysInfo.getInstance().getAppNodeById(revPacket.getSid());
@@ -318,7 +312,6 @@ public class ProtocolAccount extends ProtocolBase implements ConstParam {
                         // app == null不处理 state=0返回已注销
                         if (Integer.parseInt(app.getState()) == 0) {
                             // 通过查找operate=-1和deviceid 两个条件一起查找
-                            //todo
                             offDate = userLogDao.selectOffDateByIdAndOprate(revPacket.getSid(), ConstParam.LOGIN_OPERATE_2);
                             byte[] packet = PackPkt(ConstParam.SENT_PKT_TYPE_2);
                             SendPkt(packet);
@@ -327,7 +320,6 @@ public class ProtocolAccount extends ProtocolBase implements ConstParam {
                     }
                 }
             } catch (IOException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         }
@@ -336,7 +328,6 @@ public class ProtocolAccount extends ProtocolBase implements ConstParam {
 
 
     public byte[] PackPkt(int i) {
-        // TODO Auto-generated method stub
         PacketMsg msg = new PacketMsg();
         msg.setCmd(ConstParam.CMD_2);
         // 不同的请求报文 返回的应答应答不一样
@@ -455,7 +446,6 @@ public class ProtocolAccount extends ProtocolBase implements ConstParam {
     }
 
     public void SendPkt(byte[] sendPacket) {
-        // TODO Auto-generated method stub
         revPacket.getIoSession().write(IoBuffer.wrap(sendPacket));// 发送报文
     }
 
@@ -463,7 +453,6 @@ public class ProtocolAccount extends ProtocolBase implements ConstParam {
         System.out.println("进入函数");
         if (regAccount.getInfo() == null) {
             System.out.println("info为null");
-            //TODO
             DeviceInf deviceInf = deviceDao.selectDeviceByUserName(regAccount.getUser());//deviceDao.findDevByName(user);
             // 不存在该username
             if (deviceInf == null) {
@@ -487,7 +476,6 @@ public class ProtocolAccount extends ProtocolBase implements ConstParam {
                 System.out.println("信息完整");
                 if (revPacket.getSort() == 2) {
                     System.out.println("bingo");
-                    //TODO
                     DeviceInf deviceInf = deviceDao.selectDeviceByUserName(regAccount.getUser());//deviceDao.findDevByName(user);
                     System.out.println("bingo2");
                     if (deviceInf != null) {
@@ -525,7 +513,6 @@ public class ProtocolAccount extends ProtocolBase implements ConstParam {
         logger.debug(regAppAccount.toString());
         if (regAccount.getInfo() == null) {
             // 通过user查询数据库是否存在该用户
-            //todo
             UserInf userInf = userDao.selectUserByUserName(regAccount.getUser());//userDao.findAppuserByName(user);
             // 不存在该username
             if (userInf == null) {
@@ -545,7 +532,6 @@ public class ProtocolAccount extends ProtocolBase implements ConstParam {
             }
         } else {
             if (infoComplete) {
-                //TODO
                 logger.debug("注册信息完整-->");
 
                 UserInf userInf = userDao.selectUserByUserName(regAccount.getUser());//userDao.findAppuserByName(user);
@@ -586,7 +572,6 @@ public class ProtocolAccount extends ProtocolBase implements ConstParam {
         int same = 0;
         int change = 0;
         // 通过user查询数据库是否存在该用户
-        //TODO 已更改 需要测试
         UserInf userInf = userDao.selectUserBySid(revPacket.getSid());//userDao.findAppuserByID(revPacket.getSid());
         // 不存在该用户
         if (userInf == null) {
@@ -671,7 +656,6 @@ public class ProtocolAccount extends ProtocolBase implements ConstParam {
                 SendPkt(successPacket);
                 userNode.setLastPacketInfo(successPacket);
             } else {
-                //TODO
                 userDao.updateUserInf(userInf);
                 //sid = userDao.findAppuserByName(user).getUserID();
                 byte[] successPacket = PackPkt(ConstParam.SENT_PKT_TYPE_3);// 通过变更
@@ -682,7 +666,6 @@ public class ProtocolAccount extends ProtocolBase implements ConstParam {
     }
 
     public void devModify() {
-        //TODO
         DeviceInf deviceInf = deviceDao.selectDeviceBySid(revPacket.getSid());//deviceDao.findDevByID(revPacket.getSid());
         int same = 0;
         int change = 0;
@@ -771,7 +754,6 @@ public class ProtocolAccount extends ProtocolBase implements ConstParam {
                 SendPkt(successPacket);
                 userNode.setLastPacketInfo(successPacket);
             } else {
-                //TODO
                 deviceDao.updateDeviceInf(deviceInf);
                 sid = deviceDao.selectDeviceByUserName(regAccount.getUser()).getDeviceid();
                 byte[] successPacket = PackPkt(ConstParam.SENT_PKT_TYPE_3);// 通过变更

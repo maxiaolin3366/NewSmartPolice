@@ -26,12 +26,10 @@ public class MyCodeFactory implements ProtocolCodecFactory {
     }
 
     public ProtocolDecoder getDecoder(IoSession arg0) throws Exception {
-        // TODO Auto-generated method stub
         return decoder;
     }
 
     public ProtocolEncoder getEncoder(IoSession arg0) throws Exception {
-        // TODO Auto-generated method stub
         return encoder;
     }
 

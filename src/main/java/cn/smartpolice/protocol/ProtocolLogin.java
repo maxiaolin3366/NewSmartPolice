@@ -455,7 +455,6 @@ public class ProtocolLogin extends ProtocolBase implements ConstParam {
     }
 
     public void SendPkt(byte[] sendPacket) {
-        // TODO Auto-generated method stub
         revPacket.getIoSession().write(IoBuffer.wrap(sendPacket));// 发送报文
     }
 }

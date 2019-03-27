@@ -25,6 +25,10 @@ public class SysInfo {
     private FileUsing fileUsing;
     private static SysCfgInfo sysCfgInfo;
 
+    public static Set<UserNode> getUserNodeQueue() {
+        return userNodeQueue;
+    }
+
     private SysInfo() {
     }
 
