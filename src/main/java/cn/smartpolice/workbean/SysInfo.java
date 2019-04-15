@@ -17,7 +17,6 @@ import java.util.Set;
  */
 @Component
 public class SysInfo {
-    private static SysInfo instance;
     private static UIUserNode uiUserNode;
     private static SysStatInfo sysStatInfo;
     private static ProtocolBase[] protocolBases = {new ProtocolTest(), new ProtocolLogin(), new ProtocolAccount()};
@@ -41,10 +40,12 @@ public class SysInfo {
     }
 
     public static SysInfo getInstance() {
-        if (instance == null) {
-            instance = new SysInfo();
-        }
-        return instance;
+
+        return InnerSysInfo.instance;
+    }
+
+    private static class InnerSysInfo {//使用内部类的方式实现单例
+        private static SysInfo instance = new SysInfo();
     }
 
     public static SysStatInfo getSysStatInfo() {

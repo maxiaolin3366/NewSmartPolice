@@ -53,25 +53,24 @@ public class ProtocolAccount extends ProtocolBase implements ConstParam {
         try {
             logger.debug("进入账户管理协议-->开始协议解析");
             super.revPacket = packetInfo;
-            JsonAnalysis jsonAnalysis = new JsonAnalysis();
             String data = packetInfo.getData();
-            if (jsonAnalysis.getValue(data, "SNUM") != null) {
-                regAccount.setSnum(jsonAnalysis.getValue(data, "SNUM"));
+            if (JsonAnalysis.getValue(data, "SNUM") != null) {
+                regAccount.setSnum(JsonAnalysis.getValue(data, "SNUM"));
             }
-            if (jsonAnalysis.getValue(data, "SVER") != null) {
-                regAccount.setSver(jsonAnalysis.getValue(data, "SVER"));
+            if (JsonAnalysis.getValue(data, "SVER") != null) {
+                regAccount.setSver(JsonAnalysis.getValue(data, "SVER"));
             }
-            if (jsonAnalysis.getValue(data, "USER") != null) {
-                regAccount.setUser(jsonAnalysis.getValue(data, "USER"));
+            if (JsonAnalysis.getValue(data, "USER") != null) {
+                regAccount.setUser(JsonAnalysis.getValue(data, "USER"));
             }
-            if (jsonAnalysis.getValue(data, "PASSWORD") != null) {
-                regAccount.setPassword(jsonAnalysis.getValue(data, "PASSWORD"));
+            if (JsonAnalysis.getValue(data, "PASSWORD") != null) {
+                regAccount.setPassword(JsonAnalysis.getValue(data, "PASSWORD"));
             }
-            if (jsonAnalysis.getValue(data, "INFO") != null) {
-                regAccount.setInfo(jsonAnalysis.getValue(data, "INFO"));
+            if (JsonAnalysis.getValue(data, "INFO") != null) {
+                regAccount.setInfo(JsonAnalysis.getValue(data, "INFO"));
             }
-            if (jsonAnalysis.getValue(data, "LINK") != null) {
-                regAccount.setLink(Integer.parseInt(jsonAnalysis.getValue(data, "LINK")));
+            if (JsonAnalysis.getValue(data, "LINK") != null) {
+                regAccount.setLink(Integer.parseInt(JsonAnalysis.getValue(data, "LINK")));
             }
             // 获得设备消息节点
             if (revPacket.getSort() == ConstParam.SORT_2) {
@@ -83,33 +82,33 @@ public class ProtocolAccount extends ProtocolBase implements ConstParam {
             }
             // 设备注册信息解析
             if (revPacket.getSort() == ConstParam.SORT_2 && regAccount.getInfo() != null && revPacket.getType() != ConstParam.TYPE_5) {
-                if (jsonAnalysis.getValue(regAccount.getInfo(), "SEQ") != null) {
-                    regDevAccount.setDevSerial(jsonAnalysis.getValue(regAccount.getInfo(), "SEQ"));
+                if (JsonAnalysis.getValue(regAccount.getInfo(), "SEQ") != null) {
+                    regDevAccount.setDevSerial(JsonAnalysis.getValue(regAccount.getInfo(), "SEQ"));
 
                 }
-                if (jsonAnalysis.getValue(regAccount.getInfo(), "BARCODE") != null) {
-                    regDevAccount.setDevCode(jsonAnalysis.getValue(regAccount.getInfo(), "BARCODE"));
+                if (JsonAnalysis.getValue(regAccount.getInfo(), "BARCODE") != null) {
+                    regDevAccount.setDevCode(JsonAnalysis.getValue(regAccount.getInfo(), "BARCODE"));
 
                 }
-                if (jsonAnalysis.getValue(regAccount.getInfo(), "LATI") != null) {
-                    regDevAccount.setDevLatitude(jsonAnalysis.getValue(regAccount.getInfo(), "LATI"));
+                if (JsonAnalysis.getValue(regAccount.getInfo(), "LATI") != null) {
+                    regDevAccount.setDevLatitude(JsonAnalysis.getValue(regAccount.getInfo(), "LATI"));
 
                 }
-                if (jsonAnalysis.getValue(regAccount.getInfo(), "LONGI") != null) {
-                    regDevAccount.setDevLongitude(jsonAnalysis.getValue(regAccount.getInfo(), "LONGI"));
+                if (JsonAnalysis.getValue(regAccount.getInfo(), "LONGI") != null) {
+                    regDevAccount.setDevLongitude(JsonAnalysis.getValue(regAccount.getInfo(), "LONGI"));
 
                 }
-                if (jsonAnalysis.getValue(regAccount.getInfo(), "MAX") != null) {
-                    regDevAccount.setDevMaxConLimit(Integer.parseInt(jsonAnalysis.getValue(regAccount.getInfo(), "MAX"))); //容错处理，若MAX为空，使用Integer.parseInt()时将抛出异常
+                if (JsonAnalysis.getValue(regAccount.getInfo(), "MAX") != null) {
+                    regDevAccount.setDevMaxConLimit(Integer.parseInt(JsonAnalysis.getValue(regAccount.getInfo(), "MAX"))); //容错处理，若MAX为空，使用Integer.parseInt()时将抛出异常
                 } else {
                     regDevAccount.setDevMaxConLimit(ConstParam.DevMaxConLimit);
                 }
-                if (jsonAnalysis.getValue(regAccount.getInfo(), "CLASS") != null) {
-                    regDevAccount.setDevType(jsonAnalysis.getValue(regAccount.getInfo(), "CLASS"));
+                if (JsonAnalysis.getValue(regAccount.getInfo(), "CLASS") != null) {
+                    regDevAccount.setDevType(JsonAnalysis.getValue(regAccount.getInfo(), "CLASS"));
 
                 }
-                if (jsonAnalysis.getValue(regAccount.getInfo(), "PHONE") != null) {
-                    regDevAccount.setDevMphone(jsonAnalysis.getValue(regAccount.getInfo(), "PHONE"));
+                if (JsonAnalysis.getValue(regAccount.getInfo(), "PHONE") != null) {
+                    regDevAccount.setDevMphone(JsonAnalysis.getValue(regAccount.getInfo(), "PHONE"));
 
                 }
                 if (regDevAccount.getDevSerial() != null && regDevAccount.getDevCode() != null && regDevAccount.getDevLongitude() != null && regDevAccount.getDevLatitude() != null && regDevAccount.getDevType() != null
@@ -119,42 +118,42 @@ public class ProtocolAccount extends ProtocolBase implements ConstParam {
             }
             // app注册信息解析
             if (revPacket.getSort() == ConstParam.SORT_0 && regAccount.getInfo() != null && revPacket.getType() != ConstParam.TYPE_5) {
-                if (jsonAnalysis.getValue(regAccount.getInfo(), "LIMIT") != null) {
-                    regAppAccount.setAppAuthority(jsonAnalysis.getValue(regAccount.getInfo(), "LIMIT"));
+                if (JsonAnalysis.getValue(regAccount.getInfo(), "LIMIT") != null) {
+                    regAppAccount.setAppAuthority(JsonAnalysis.getValue(regAccount.getInfo(), "LIMIT"));
 
                 }
 
-                if (jsonAnalysis.getValue(regAccount.getInfo(), "CLASS") != null) {
-                    regAppAccount.setAppType(jsonAnalysis.getValue(regAccount.getInfo(), "CLASS"));
+                if (JsonAnalysis.getValue(regAccount.getInfo(), "CLASS") != null) {
+                    regAppAccount.setAppType(JsonAnalysis.getValue(regAccount.getInfo(), "CLASS"));
 
                 }
-                if (jsonAnalysis.getValue(regAccount.getInfo(), "NAME") != null) {
-                    regAppAccount.setAppName(jsonAnalysis.getValue(regAccount.getInfo(), "NAME"));
+                if (JsonAnalysis.getValue(regAccount.getInfo(), "NAME") != null) {
+                    regAppAccount.setAppName(JsonAnalysis.getValue(regAccount.getInfo(), "NAME"));
 
                 }
-                if (jsonAnalysis.getValue(regAccount.getInfo(), "BIRTH") != null) {
+                if (JsonAnalysis.getValue(regAccount.getInfo(), "BIRTH") != null) {
                     try {
-                        regAppAccount.setAppBirth(new SimpleDateFormat("yyyy-MM-dd").parse(jsonAnalysis.getValue(regAccount.getInfo(), "BIRTH")));
+                        regAppAccount.setAppBirth(new SimpleDateFormat("yyyy-MM-dd").parse(JsonAnalysis.getValue(regAccount.getInfo(), "BIRTH")));
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
                 }
-                if (jsonAnalysis.getValue(regAccount.getInfo(), "SEX") != null) {
-                    logger.debug("sex != null--》" + jsonAnalysis.getValue(regAccount.getInfo(), "SEX"));
-                    if (jsonAnalysis.getValue(regAccount.getInfo(), "SEX").equals(ConstParam.MAN)) {
+                if (JsonAnalysis.getValue(regAccount.getInfo(), "SEX") != null) {
+                    logger.debug("sex != null--》" + JsonAnalysis.getValue(regAccount.getInfo(), "SEX"));
+                    if (JsonAnalysis.getValue(regAccount.getInfo(), "SEX").equals(ConstParam.MAN)) {
                         logger.info("是男的");
                         regAppAccount.setAppSex(ConstParam.MAN);
                     } else {
-                        logger.debug("性别-->" + jsonAnalysis.getValue(regAccount.getInfo(), "SEX"));
+                        logger.debug("性别-->" + JsonAnalysis.getValue(regAccount.getInfo(), "SEX"));
                         regAppAccount.setAppSex(ConstParam.WOMAN);
                     }
                 }
-                if (jsonAnalysis.getValue(regAccount.getInfo(), "EMAIL") != null) {
-                    regAppAccount.setAppMail(jsonAnalysis.getValue(regAccount.getInfo(), "EMAIL"));
+                if (JsonAnalysis.getValue(regAccount.getInfo(), "EMAIL") != null) {
+                    regAppAccount.setAppMail(JsonAnalysis.getValue(regAccount.getInfo(), "EMAIL"));
 
                 }
-                if (jsonAnalysis.getValue(regAccount.getInfo(), "PHONE") != null) {
-                    regAppAccount.setAppMphone(jsonAnalysis.getValue(regAccount.getInfo(), "PHONE"));
+                if (JsonAnalysis.getValue(regAccount.getInfo(), "PHONE") != null) {
+                    regAppAccount.setAppMphone(JsonAnalysis.getValue(regAccount.getInfo(), "PHONE"));
 
                 }
                 if (regAppAccount.getAppAuthority() != null && regAppAccount.getAppName() != null && regAppAccount.getAppBirth() != null && regAppAccount.getAppMail() != null && regAppAccount.getAppType() != null && regAppAccount.getAppMphone() != null) {
@@ -450,9 +449,7 @@ public class ProtocolAccount extends ProtocolBase implements ConstParam {
     }
 
     public void devReg() {
-        System.out.println("进入函数");
         if (regAccount.getInfo() == null) {
-            System.out.println("info为null");
             DeviceInf deviceInf = deviceDao.selectDeviceByUserName(regAccount.getUser());//deviceDao.findDevByName(user);
             // 不存在该username
             if (deviceInf == null) {
@@ -471,13 +468,9 @@ public class ProtocolAccount extends ProtocolBase implements ConstParam {
                 }
             }
         } else {
-            System.out.println("info不为null");
             if (infoComplete) {
-                System.out.println("信息完整");
                 if (revPacket.getSort() == 2) {
-                    System.out.println("bingo");
                     DeviceInf deviceInf = deviceDao.selectDeviceByUserName(regAccount.getUser());//deviceDao.findDevByName(user);
-                    System.out.println("bingo2");
                     if (deviceInf != null) {
                         sid = deviceInf.getDeviceid();
                         byte[] successPacket = PackPkt(ConstParam.SENT_PKT_TYPE_2);
@@ -501,7 +494,6 @@ public class ProtocolAccount extends ProtocolBase implements ConstParam {
                     }
                 }
             } else {
-                System.out.println("信息不完整");
                 errorPktState = ConstParam.ERROR_PKT_STATE_2;
                 byte[] errorPacket = PackPkt(ConstParam.SENT_PKT_TYPE_1);
                 SendPkt(errorPacket);
@@ -649,7 +641,7 @@ public class ProtocolAccount extends ProtocolBase implements ConstParam {
                     ++change;
                 }
             }
-            System.out.println("共有" + change + "个信息更改");
+            logger.debug("共有" + change + "个信息更改-->");
             if (change == 0 && same != 0) {// 返回RET=1，表明数据已经更新过
                 sid = userInf.getUserid();
                 byte[] successPacket = PackPkt(ConstParam.SENT_PKT_TYPE_2);// 通过变更
@@ -747,7 +739,7 @@ public class ProtocolAccount extends ProtocolBase implements ConstParam {
                 }
                 // deviceInf.setState("1");//密码已更改，需要密码验证
             }
-            System.out.println("共有" + change + "个信息更改");
+            logger.debug("共有" + change + "个信息更改-->");
             if (change == 0 && same != 0) {
                 sid = deviceInf.getDeviceid();
                 byte[] successPacket = PackPkt(ConstParam.SENT_PKT_TYPE_2);// 通过变更

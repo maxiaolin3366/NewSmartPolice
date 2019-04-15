@@ -35,7 +35,7 @@ public class JsonAnalysis {
 	 * @return the value of the key 
 	 * if it don't have the value  return null
 	 */
-	public String getValue(String jsonString, String key) {
+    public static String getValue(String jsonString, String key) {
 		if(jsonString == null || key == null){
 			
 			return null;

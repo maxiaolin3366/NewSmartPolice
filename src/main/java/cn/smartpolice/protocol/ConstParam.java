@@ -107,4 +107,12 @@ public interface ConstParam {
     String MessageType_1 = "1";//报警消息
     String MessageType_2 = "2";//聊天
     String MessageType_4 = "4";//系统通告
+    //查询类型
+    byte codeId = 64;
+    byte codeNoRead = 0;
+    byte codeAlarm = 1;
+    byte codeChat = 2;
+    byte codeNoice = 3;
+    byte codeNoReadContact = 8;
+    byte getCodeNoReadRelated = 16;
 }

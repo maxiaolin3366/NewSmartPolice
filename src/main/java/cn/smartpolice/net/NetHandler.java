@@ -31,8 +31,9 @@ public class NetHandler extends IoHandlerAdapter {
 	public void messageReceived(IoSession session, Object message) throws Exception {
 		long time1 = new Date().getTime();
 		logger.debug("消息接入--> ");
-		String messageStr = message.toString();
-		byte[] b = messageStr.getBytes(StandardCharsets.UTF_8);
+        IoBuffer ioBuffer = (IoBuffer) message; //用IoBuffer读取传入的消息字节
+        byte[] b = new byte[ioBuffer.limit()];
+        ioBuffer.get(b);
 		ProtocolProc.RecvPktProc(session, b);
 		long time2 = new Date().getTime();
 		logger.debug("系统反应时间-->" + (time2 - time1) + "毫秒");

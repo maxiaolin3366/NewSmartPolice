@@ -56,12 +56,11 @@ public class ProtocolProc {
                 logger.debug("协议检查无误，进入具体协议解析类-->");
                 SysInfo.getProtocolBases()[packetInfo.getCmd()].ParsePktProto(packetInfo);
             } else {
-                ios.closeNow();
                 logger.debug("协议检查失败，本次报文不做处理-->");
             }
         } else {
-            ios.closeNow();
             logger.debug("协议格式不正确，解析失败，不做处理-->");
+            logger.debug(packetInfo.toString());
         }
     }
 
@@ -104,24 +103,24 @@ public class ProtocolProc {
                         packetInfo.setDatapos(datapos);// 数据域的起始位置
                         byte opt = packetInfo.getOpt();
                         if ((opt & 0x01) != 0) { //
-                            String hopt1 = jsonAnalysis.getValue(datas, "HOPT");
+                            String hopt1 = JsonAnalysis.getValue(datas, "HOPT");
                             if (hopt1 != null) {
-                                String did = jsonAnalysis.getValue(hopt1, "DID");
+                                String did = JsonAnalysis.getValue(hopt1, "DID");
                                 packetInfo.setDid(Integer.parseInt(did));
                             }
                         }
                         if ((opt & 0x02) != 0) {
-                            String hopt2 = jsonAnalysis.getValue(datas, "HOPT");
+                            String hopt2 = JsonAnalysis.getValue(datas, "HOPT");
                             if (hopt2 != null) {
-                                String keyseq = jsonAnalysis.getValue(hopt2, "KEYSEQ");
+                                String keyseq = JsonAnalysis.getValue(hopt2, "KEYSEQ");
                                 packetInfo.setKeyseq(Integer.parseInt(keyseq));
                             }
                         }
                         if ((opt & 0x04) != 0) {
-                            String hopt3 = jsonAnalysis.getValue(datas, "HOPT");
+                            String hopt3 = JsonAnalysis.getValue(datas, "HOPT");
                             if (hopt3 != null) {
-                                String sip = jsonAnalysis.getValue(hopt3, "SIP");
-                                String sport = jsonAnalysis.getValue(hopt3, "SPORT");
+                                String sip = JsonAnalysis.getValue(hopt3, "SIP");
+                                String sport = JsonAnalysis.getValue(hopt3, "SPORT");
                                 packetInfo.setSip(sip);
                                 packetInfo.setSport(Integer.parseInt(sport));
                             }
@@ -141,7 +140,7 @@ public class ProtocolProc {
                         String datass;
                         //将收到的DATA域进行UTF-8编码
                         datass = new String(copy, StandardCharsets.UTF_8);
-                        String data = jsonAnalysis.getValue(datass, "DATA");
+                        String data = JsonAnalysis.getValue(datass, "DATA");
                         packetInfo.setData(data);
                         return true;
                     } else
@@ -266,10 +265,9 @@ public class ProtocolProc {
             logger.debug("存在节点-->");
             if (userNode.getState() == ConstParam.LOGIN_STATE_2) { //是成功登陆的节点
                 logger.debug("该节点已经登陆-->");
-                JsonAnalysis jsonAnalysis = new JsonAnalysis();
-                if (jsonAnalysis.getValue(packetInfo.getData(), "LINK") != null) {// 如果配置的有LINK，则与节点中的LINK对比，是否相同
+                if (JsonAnalysis.getValue(packetInfo.getData(), "LINK") != null) {// 如果配置的有LINK，则与节点中的LINK对比，是否相同
                     logger.debug("LINK不为空-->");
-                    int link = Integer.parseInt(jsonAnalysis.getValue(packetInfo.getData(), "LINK"));
+                    int link = Integer.parseInt(JsonAnalysis.getValue(packetInfo.getData(), "LINK"));
                     if (userNode.getLink() == link) {
                         logger.debug("LINK与服务器比对正确");
                         return updateUserNode();

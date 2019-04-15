@@ -75,9 +75,9 @@
                 <entry key="executor" value-ref="executorFilter"/>
                 <entry key="mdcInjectionFilter" value-ref="mdcInjectionFilter"/>
                 <!--自己实现的编解码器filter-->
-                <entry key="codecFilter" value-ref="codecFilter"/>
+                <!-- <entry key="codecFilter" value-ref="codecFilter"/>-->
                 <!--日志的filter-->
-                <entry key="loggingFilter" value-ref="loggingFilter"/>
+                <!-- <entry key="loggingFilter" value-ref="loggingFilter"/>-->
                 <!--心跳filter-->
                 <!-- <entry key="keepAliveFilter" value-ref="keepAliveFilter" />-->
             </map>
@@ -90,15 +90,15 @@
     </bean>
 
     <!--日志-->
-    <bean id="loggingFilter" class="org.apache.mina.filter.logging.LoggingFilter"/>
+    <!-- <bean id="loggingFilter" class="org.apache.mina.filter.logging.LoggingFilter"/>-->
 
     <!--编解码-->
-    <bean id="codecFilter" class="org.apache.mina.filter.codec.ProtocolCodecFilter">
-        <constructor-arg>
-            <!--构造函数的参数传入自己实现的对象-->
-            <bean class="cn.smartpolice.net.MyCodeFactory"></bean>
-        </constructor-arg>
-    </bean>
+    <!-- <bean id="codecFilter" class="org.apache.mina.filter.codec.ProtocolCodecFilter">
+         <constructor-arg>
+             &lt;!&ndash;构造函数的参数传入自己实现的对象&ndash;&gt;
+             <bean class="cn.smartpolice.net.MyCodeFactory"></bean>
+         </constructor-arg>
+     </bean>-->
 
     <!--心跳检测filter-->
     <bean id="keepAliveFilter" class="org.apache.mina.filter.keepalive.KeepAliveFilter">

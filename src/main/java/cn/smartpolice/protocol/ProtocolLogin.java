@@ -54,24 +54,23 @@ public class ProtocolLogin extends ProtocolBase implements ConstParam {
         super.revPacket = packetInfo;
         String data = packetInfo.getData();
         // 登录请求
-        JsonAnalysis jsonAnalysis = new JsonAnalysis();
         if (revPacket.getType() == ConstParam.TYPE_1) {
-            snum = jsonAnalysis.getValue(data, "SNUM");
-            sver = jsonAnalysis.getValue(data, "SVER");
-            user = jsonAnalysis.getValue(data, "USER");
-            if (jsonAnalysis.getValue(data, "LINK") != null) {
-                userNodeLink = Integer.parseInt(jsonAnalysis.getValue(data, "LINK"));
+            snum = JsonAnalysis.getValue(data, "SNUM");
+            sver = JsonAnalysis.getValue(data, "SVER");
+            user = JsonAnalysis.getValue(data, "USER");
+            if (JsonAnalysis.getValue(data, "LINK") != null) {
+                userNodeLink = Integer.parseInt(JsonAnalysis.getValue(data, "LINK"));
             }
         }
         // 登录验证 登出验证只有user
         if (revPacket.getType() == ConstParam.TYPE_3) {
-            code = jsonAnalysis.getValue(data, "CODE");
-            user = jsonAnalysis.getValue(data, "USER");
+            code = JsonAnalysis.getValue(data, "CODE");
+            user = JsonAnalysis.getValue(data, "USER");
         }
         if (revPacket.getType() == ConstParam.TYPE_5) {
-            user = jsonAnalysis.getValue(data, "USER");
-            if (jsonAnalysis.getValue(data, "LINK") != null) {
-                userNodeLink = Integer.parseInt(jsonAnalysis.getValue(data, "LINK"));
+            user = JsonAnalysis.getValue(data, "USER");
+            if (JsonAnalysis.getValue(data, "LINK") != null) {
+                userNodeLink = Integer.parseInt(JsonAnalysis.getValue(data, "LINK"));
             }
         }
         ExecProto();
@@ -383,6 +382,7 @@ public class ProtocolLogin extends ProtocolBase implements ConstParam {
         }
         // 保活报文
         if (revPacket.getType() == ConstParam.TYPE_6) {
+            logger.debug("保活报文-->");
             if (userNode != null) {
                 // 更新接收到报文的时间
                 userNode.setRevPktDate(new Date());
@@ -396,7 +396,6 @@ public class ProtocolLogin extends ProtocolBase implements ConstParam {
                 }
                 byte[] keepAlivePkt = PackPkt(ConstParam.SENT_PKT_TYPE_4);
                 userNode.setLastPacketInfo(keepAlivePkt);
-                logger.debug(keepAlivePkt.toString());
                 SendPkt(keepAlivePkt);
                 return;
             }
@@ -444,7 +443,7 @@ public class ProtocolLogin extends ProtocolBase implements ConstParam {
                 dataChild.put("INFO", "" + revPacket.getSid());
                 break;
             case 4:
-                System.out.println("case4保活应答报文没内容");
+                logger.debug("case4保活应答报文没内容-->");
                 break;
         }
         data.put("DATA", dataChild);

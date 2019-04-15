@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.smartpolice.dao.SoftInfMapper">
+    <resultMap id="BaseResultMap" type="cn.smartpolice.entity.SoftInf">
+        <result column="softid" jdbcType="INTEGER" property="softid"/>
+        <result column="type" jdbcType="INTEGER" property="type"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="version" jdbcType="VARCHAR" property="version"/>
+        <result column="serial" jdbcType="VARCHAR" property="serial"/>
+        <result column="date" jdbcType="TIMESTAMP" property="date"/>
+        <result column="uploadid" jdbcType="INTEGER" property="uploadid"/>
+        <result column="md5" jdbcType="VARCHAR" property="md5"/>
+        <result column="size" jdbcType="BIGINT" property="size"/>
+        <result column="url" jdbcType="VARCHAR" property="url"/>
+        <result column="state" jdbcType="CHAR" property="state"/>
+    </resultMap>
+    <sql id="Example_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" prefixOverrides="and" suffix=")">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="("
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Update_By_Example_Where_Clause">
+        <where>
+            <foreach collection="example.oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" prefixOverrides="and" suffix=")">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="("
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Base_Column_List">
+        softid, type, name, version, serial, date, uploadid, md5, size, url, state
+    </sql>
+    <select id="selectByExample" parameterType="cn.smartpolice.entity.SoftInfExample" resultMap="BaseResultMap">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        from soft_inf
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+    <delete id="deleteByExample" parameterType="cn.smartpolice.entity.SoftInfExample">
+        delete from soft_inf
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </delete>
+    <insert id="insert" parameterType="cn.smartpolice.entity.SoftInf">
+        insert into soft_inf (softid, type, name,
+        version, serial, date,
+        uploadid, md5, size,
+        url, state)
+        values (#{softid,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR},
+        #{version,jdbcType=VARCHAR}, #{serial,jdbcType=VARCHAR}, #{date,jdbcType=TIMESTAMP},
+        #{uploadid,jdbcType=INTEGER}, #{md5,jdbcType=VARCHAR}, #{size,jdbcType=BIGINT},
+        #{url,jdbcType=VARCHAR}, #{state,jdbcType=CHAR})
+    </insert>
+    <insert id="insertSelective" parameterType="cn.smartpolice.entity.SoftInf">
+        insert into soft_inf
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="softid != null">
+                softid,
+            </if>
+            <if test="type != null">
+                type,
+            </if>
+            <if test="name != null">
+                name,
+            </if>
+            <if test="version != null">
+                version,
+            </if>
+            <if test="serial != null">
+                serial,
+            </if>
+            <if test="date != null">
+                date,
+            </if>
+            <if test="uploadid != null">
+                uploadid,
+            </if>
+            <if test="md5 != null">
+                md5,
+            </if>
+            <if test="size != null">
+                size,
+            </if>
+            <if test="url != null">
+                url,
+            </if>
+            <if test="state != null">
+                state,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="softid != null">
+                #{softid,jdbcType=INTEGER},
+            </if>
+            <if test="type != null">
+                #{type,jdbcType=INTEGER},
+            </if>
+            <if test="name != null">
+                #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="version != null">
+                #{version,jdbcType=VARCHAR},
+            </if>
+            <if test="serial != null">
+                #{serial,jdbcType=VARCHAR},
+            </if>
+            <if test="date != null">
+                #{date,jdbcType=TIMESTAMP},
+            </if>
+            <if test="uploadid != null">
+                #{uploadid,jdbcType=INTEGER},
+            </if>
+            <if test="md5 != null">
+                #{md5,jdbcType=VARCHAR},
+            </if>
+            <if test="size != null">
+                #{size,jdbcType=BIGINT},
+            </if>
+            <if test="url != null">
+                #{url,jdbcType=VARCHAR},
+            </if>
+            <if test="state != null">
+                #{state,jdbcType=CHAR},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByExample" parameterType="cn.smartpolice.entity.SoftInfExample" resultType="java.lang.Integer">
+        select count(*) from soft_inf
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+    <update id="updateByExampleSelective" parameterType="map">
+        update soft_inf
+        <set>
+            <if test="record.softid != null">
+                softid = #{record.softid,jdbcType=INTEGER},
+            </if>
+            <if test="record.type != null">
+                type = #{record.type,jdbcType=INTEGER},
+            </if>
+            <if test="record.name != null">
+                name = #{record.name,jdbcType=VARCHAR},
+            </if>
+            <if test="record.version != null">
+                version = #{record.version,jdbcType=VARCHAR},
+            </if>
+            <if test="record.serial != null">
+                serial = #{record.serial,jdbcType=VARCHAR},
+            </if>
+            <if test="record.date != null">
+                date = #{record.date,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.uploadid != null">
+                uploadid = #{record.uploadid,jdbcType=INTEGER},
+            </if>
+            <if test="record.md5 != null">
+                md5 = #{record.md5,jdbcType=VARCHAR},
+            </if>
+            <if test="record.size != null">
+                size = #{record.size,jdbcType=BIGINT},
+            </if>
+            <if test="record.url != null">
+                url = #{record.url,jdbcType=VARCHAR},
+            </if>
+            <if test="record.state != null">
+                state = #{record.state,jdbcType=CHAR},
+            </if>
+        </set>
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByExample" parameterType="map">
+        update soft_inf
+        set softid = #{record.softid,jdbcType=INTEGER},
+        type = #{record.type,jdbcType=INTEGER},
+        name = #{record.name,jdbcType=VARCHAR},
+        version = #{record.version,jdbcType=VARCHAR},
+        serial = #{record.serial,jdbcType=VARCHAR},
+        date = #{record.date,jdbcType=TIMESTAMP},
+        uploadid = #{record.uploadid,jdbcType=INTEGER},
+        md5 = #{record.md5,jdbcType=VARCHAR},
+        size = #{record.size,jdbcType=BIGINT},
+        url = #{record.url,jdbcType=VARCHAR},
+        state = #{record.state,jdbcType=CHAR}
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+</mapper>
