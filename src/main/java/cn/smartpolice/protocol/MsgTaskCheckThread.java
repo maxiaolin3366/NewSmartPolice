@@ -77,6 +77,7 @@ public class MsgTaskCheckThread implements Runnable {
                             msgRecv.setRecvuserid(recvuserid);
                             msgRecv.setMsgtype("1");//
                             msgRecv.setState("0"); // 标记为未读
+                            msgRecv.setRecvtype(1);
                             msgRecv.setRecvtime(new Date(msgTask.getmDate()));
                             msgRecvDao.insert(msgRecv);
                             sign = msgRecv.getRecvid();
@@ -115,6 +116,7 @@ public class MsgTaskCheckThread implements Runnable {
                         msgRecv.setRecvuserid(msgTask.getRevUserID());
                         msgRecv.setMsgtype("2");// 2为聊天消息
                         msgRecv.setState("0");
+                        msgRecv.setRecvtype(1);
                         msgRecv.setRecvtime(new Date(msgTask.getmDate()));
                         msgRecvDao.insert(msgRecv);// 将未读消息插入消息记录表中，返回SIGN
                         sign = msgRecv.getRecvid();
@@ -152,6 +154,7 @@ public class MsgTaskCheckThread implements Runnable {
                             MsgRecv msgRecv = new MsgRecv();
                             msgRecv.setMessageid(messageid);
                             msgRecv.setMsgtype("4");
+                            msgRecv.setRecvtype(1);
                             msgRecv.setRecvtime(new Date(msgTask.getmDate()));
                             msgRecv.setState("0");
                             msgRecv.setSenduserid(msgTask.getSendUserID());
@@ -176,6 +179,7 @@ public class MsgTaskCheckThread implements Runnable {
                             msgRecv.setMessageid(messageid);
                             msgRecv.setRecvtime(new Date(msgTask.getmDate()));
                             msgRecv.setState("0");
+                            msgRecv.setRecvtype(1);
                             msgRecv.setSenduserid(msgTask.getSendUserID());
                             msgRecv.setRecvuserid(list.get(i).getUserid());
                             msgRecv.setMsgtype("2");
@@ -195,6 +199,7 @@ public class MsgTaskCheckThread implements Runnable {
                         msgRecv.setMsgtype("3");
                         msgNoticeDao.insert(notice);
                         messageid = notice.getNoticeid();
+                        msgRecv.setRecvtype(1);
                         List<UserInf> list = userDao.selectAllCompanyUser();
                         for (int i = 0; i < list.size(); i++) {
                             msgRecv.setMessageid(messageid);
@@ -216,6 +221,7 @@ public class MsgTaskCheckThread implements Runnable {
                         MsgRecv msgRecv = new MsgRecv();
                         notice.setRecvtype(4);
                         msgRecv.setMsgtype("4");
+                        msgRecv.setRecvtype(2);
                         msgNoticeDao.insert(notice);
                         messageid = notice.getNoticeid();
                         List<UserInf> list = userDao.selectAllManagerUser();
@@ -239,11 +245,11 @@ public class MsgTaskCheckThread implements Runnable {
 
                     }
                 } else {
-                    System.out.println("不支持的消息类型,删除该消息");
+                    logger.debug("不支持的消息类型,删除该消息");
                     SysInfo.getMsgTaskQueue().remove(msgTask);
                 }
             } catch (Exception e) {
-                System.out.println("捕获异常，删除节点" + e.getMessage());
+                logger.debug("捕获异常，删除节点" + e.getMessage());
             } finally {
                 SysInfo.getMsgTaskQueue().remove(msgTask);
             }
