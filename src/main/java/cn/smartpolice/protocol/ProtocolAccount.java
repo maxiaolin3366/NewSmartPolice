@@ -488,7 +488,8 @@ public class ProtocolAccount extends ProtocolBase implements ConstParam {
                         dev.setType(regDevAccount.getDevType());
                         dev.setMaxconlimit(regDevAccount.getDevMaxConLimit());
                         dev.setMphone(regDevAccount.getDevMphone());
-                        sid = deviceDao.insert(dev);
+                        deviceDao.insert(dev);
+                        sid = dev.getDeviceid();
                         byte[] successPacket = PackPkt(ConstParam.SENT_PKT_TYPE_3);
                         SendPkt(successPacket);
                     }

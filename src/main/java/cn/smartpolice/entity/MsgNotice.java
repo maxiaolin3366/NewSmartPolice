@@ -13,8 +13,6 @@ public class MsgNotice {
 
     private Date sendtime;
 
-    private Integer recvid;
-
     private String sets;
 
     private Integer recvtype;
@@ -59,14 +57,6 @@ public class MsgNotice {
         this.sendtime = sendtime;
     }
 
-    public Integer getRecvid() {
-        return recvid;
-    }
-
-    public void setRecvid(Integer recvid) {
-        this.recvid = recvid;
-    }
-
     public String getSets() {
         return sets;
     }
@@ -81,5 +71,18 @@ public class MsgNotice {
 
     public void setRecvtype(Integer recvtype) {
         this.recvtype = recvtype;
+    }
+
+    @Override
+    public String toString() {
+        return "MsgNotice{" +
+                "noticeid=" + noticeid +
+                ", title='" + title + '\'' +
+                ", msg='" + msg + '\'' +
+                ", sendid=" + sendid +
+                ", sendtime=" + sendtime +
+                ", sets='" + sets + '\'' +
+                ", recvtype=" + recvtype +
+                '}';
     }
 }

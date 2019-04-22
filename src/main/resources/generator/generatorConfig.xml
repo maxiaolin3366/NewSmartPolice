@@ -43,7 +43,7 @@
             <property name="enableSubPackages" value="false"/>
         </javaClientGenerator>
         <!-- 指定数据库表 -->
-        <table schema="" tableName="admin_log"></table>
+        <!--<table schema="" tableName="admin_log"></table>
         <table schema="" tableName="company_info"></table>
         <table schema="" tableName="device_inf"></table>
         <table schema="" tableName="user_inf"></table>
@@ -54,16 +54,16 @@
         <table schema="" tableName="device_attach"></table>
         <table schema="" tableName="device_audit"></table>
         <table schema="" tableName="msg_alarm"></table>
-        <table schema="" tableName="msg_chat"></table>
+        <table schema="" tableName="msg_chat"></table>-->
         <table schema="" tableName="msg_notice"></table>
-        <table schema="" tableName="msg_recv"></table>
-        <table schema="" tableName="oprate"></table>
-        <table schema="" tableName="relate_inf"></table>
-        <table schema="" tableName="relate_wait"></table>
-        <table schema="" tableName="soft_download"></table>
-        <table schema="" tableName="soft_inf"></table>
-        <table schema="" tableName="soft_publish"></table>
-        <table schema="" tableName="system_runinfo"></table>
+        <!-- <table schema="" tableName="msg_recv"></table>
+         <table schema="" tableName="oprate"></table>
+         <table schema="" tableName="relate_inf"></table>
+         <table schema="" tableName="relate_wait"></table>
+         <table schema="" tableName="soft_download"></table>
+         <table schema="" tableName="soft_inf"></table>
+         <table schema="" tableName="soft_publish"></table>
+         <table schema="" tableName="system_runinfo"></table>-->
 
     </context>
 </generatorConfiguration>

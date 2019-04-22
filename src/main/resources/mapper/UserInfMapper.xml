@@ -16,6 +16,15 @@
         <result column="mail" jdbcType="VARCHAR" property="mail"/>
         <result column="mphone" jdbcType="VARCHAR" property="mphone"/>
     </resultMap>
+    <select id="selectAllUser" resultMap="BaseResultMap" resultType="List">
+        select * from user_inf where state='1'
+    </select>
+    <select id="selectAllCompanyUser" resultMap="BaseResultMap">
+        select * from user_inf where state='1' where type='1'
+    </select>
+    <select id="selectAllManagerUser" resultMap="BaseResultMap">
+        select * from user_inf where state='1' where type='2'
+    </select>
     <select id="selectUserBySid" parameterType="Integer" resultMap="BaseResultMap">
         select * from user_inf where userid = #{sid}
     </select>

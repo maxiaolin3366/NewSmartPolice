@@ -1,15 +1,10 @@
 package cn.smartpolice.workbean;
 
-import cn.smartpolice.protocol.ProtocolAccount;
-import cn.smartpolice.protocol.ProtocolBase;
-import cn.smartpolice.protocol.ProtocolLogin;
-import cn.smartpolice.protocol.ProtocolTest;
+import cn.smartpolice.protocol.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 /*
  * 系统信息 使用synchronizedSet方法使HashSet具有同步的能力：Set s =
@@ -19,10 +14,16 @@ import java.util.Set;
 public class SysInfo {
     private static UIUserNode uiUserNode;
     private static SysStatInfo sysStatInfo;
-    private static ProtocolBase[] protocolBases = {new ProtocolTest(), new ProtocolLogin(), new ProtocolAccount()};
+    private static ProtocolBase[] protocolBases = {new ProtocolTest(), new ProtocolLogin(), new ProtocolAccount(), new ProtocolControl(), new ProtocolQuery(), new ProtocolMessage()};
     private static Set<UserNode> userNodeQueue = Collections.synchronizedSet(new HashSet<UserNode>());  //节点队列
     private FileUsing fileUsing;
     private static SysCfgInfo sysCfgInfo;
+    private static Thread msgTaskCheckThread;
+    private static List<MsgTask> msgTaskQueue = Collections.synchronizedList(new ArrayList<MsgTask>());
+
+    public static List<MsgTask> getMsgTaskQueue() {
+        return msgTaskQueue;
+    }
 
     public static Set<UserNode> getUserNodeQueue() {
         return userNodeQueue;
@@ -39,6 +40,38 @@ public class SysInfo {
         SysInfo.uiUserNode = uiUserNode;
     }
 
+    public static Thread getMsgTaskCheckThread() {
+        return msgTaskCheckThread;
+    }
+
+    private Thread createNewThread() {
+        msgTaskCheckThread = new Thread((new MsgTaskCheckThread()));
+        return msgTaskCheckThread;
+    }
+
+    public void msgTaskThreadCheck() {
+        Thread msgTaskCheckThread = null;
+        if (SysInfo.getMsgTaskCheckThread() == null) {
+            msgTaskCheckThread = SysInfo.getInstance().createNewThread();
+            msgTaskCheckThread.start();
+        } else {
+            if (!SysInfo.getMsgTaskCheckThread().isAlive()) {
+                msgTaskCheckThread = SysInfo.getInstance().createNewThread();
+                msgTaskCheckThread.start();
+            }
+        }
+    }
+
+    public void addMsgTask(MsgTask msgTask) {
+
+        msgTaskQueue.add(msgTask);
+    }
+
+    public boolean removeMsgTask(MsgTask msgTask) {
+
+        return msgTaskQueue.remove(msgTask);
+
+    }
     public static SysInfo getInstance() {
 
         return InnerSysInfo.instance;

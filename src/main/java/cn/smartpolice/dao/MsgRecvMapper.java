@@ -21,4 +21,20 @@ public interface MsgRecvMapper {
     int updateByExampleSelective(@Param("record") MsgRecv record, @Param("example") MsgRecvExample example);
 
     int updateByExample(@Param("record") MsgRecv record, @Param("example") MsgRecvExample example);
+
+    int selectUnReadAll(int recvuserid);
+
+    int selectUnReadAlarm(int recvuserid);
+
+    int selectUnReadChat(int recvuserid);
+
+    int selectUnReadNotice(int recvuserid);
+
+    List<MsgRecv> selectMessageOfUnReadMsg(int recvuserid, int pageSize);
+
+    List<MsgRecv> selectMessageOfAlarm(int recvuserid, int pageSize);
+
+    List<MsgRecv> selectMessageOfChat(int recvuserid, int pageSize);
+
+    List<MsgRecv> selectMessageOfNotice(int recvuserid, int pageSize);
 }

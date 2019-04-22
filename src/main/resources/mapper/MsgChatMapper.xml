@@ -12,6 +12,9 @@
     <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="cn.smartpolice.entity.MsgChat">
         <result column="msg" jdbcType="LONGVARCHAR" property="msg"/>
     </resultMap>
+    <select id="selectChat" parameterType="int" resultMap="BaseResultMap">
+        select msg_chat from msg_chat where chatid=#(messageid)
+    </select>
     <sql id="Example_Where_Clause">
         <where>
             <foreach collection="oredCriteria" item="criteria" separator="or">
@@ -116,6 +119,9 @@
         </if>
     </delete>
     <insert id="insert" parameterType="cn.smartpolice.entity.MsgChat">
+        <selectKey keyProperty="chatid" order="AFTER" resultType="java.lang.Integer">
+            select LAST_INSERT_ID()
+        </selectKey>
         insert into msg_chat (chatid, sendid, recvid,
         sendtime, type, color,
         msg)

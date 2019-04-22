@@ -30,4 +30,10 @@ public interface UserInfMapper {
 
     void changeStateToZeroById(int userId);
 
+    List<UserInf> selectAllUser();
+
+    List<UserInf> selectAllCompanyUser();
+
+    List<UserInf> selectAllManagerUser();
+
 }

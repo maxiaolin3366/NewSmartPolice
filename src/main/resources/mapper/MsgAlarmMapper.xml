@@ -9,6 +9,9 @@
         <result column="level" jdbcType="INTEGER" property="level"/>
         <result column="sort" jdbcType="INTEGER" property="sort"/>
     </resultMap>
+    <select id="selectAlarm" parameterType="int" resultMap="BaseResultMap">
+        select msg_alarm from msg_alarm where alarmid=#(messageid)
+    </select>
     <sql id="Example_Where_Clause">
         <where>
             <foreach collection="oredCriteria" item="criteria" separator="or">

@@ -11,6 +11,12 @@
         <result column="password" jdbcType="VARCHAR" property="password"/>
         <result column="state" jdbcType="CHAR" property="state"/>
     </resultMap>
+    <select id="findUserIdByDeviceId" parameterType="int">
+        select * from relate_inf where deviceid=#{deviceid}
+    </select>
+    <select id="findManagerIdByDeviceId" parameterType="int">
+        select * from relate_inf where deviceid=#{deviceid} and authority='0'
+    </select>
     <sql id="Example_Where_Clause">
         <where>
             <foreach collection="oredCriteria" item="criteria" separator="or">

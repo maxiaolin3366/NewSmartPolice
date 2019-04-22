@@ -25,4 +25,6 @@ public interface MsgChatMapper {
     int updateByExampleWithBLOBs(@Param("record") MsgChat record, @Param("example") MsgChatExample example);
 
     int updateByExample(@Param("record") MsgChat record, @Param("example") MsgChatExample example);
+
+    MsgChat selectChat(int messageid);
 }

@@ -11,6 +11,39 @@
         <result column="SENDUSERID" jdbcType="INTEGER" property="senduserid"/>
         <result column="recvtype" jdbcType="INTEGER" property="recvtype"/>
     </resultMap>
+    <select id="selectUnReadAll" parameterType="int">
+        select count(*) from msg_recv where state = '0' and recvuserid=#(recvuserid)
+    </select>
+
+    <select id="selectUnReadAlarm" parameterType="int">
+        select count(*) from msg_recv where state = '0' and msgtype='0' and recvuserid=#(recvuserid)
+    </select>
+
+    <select id="selectUnReadChat" parameterType="int">
+        select count(*) from msg_recv where state = '0' and msgtype='2' and recvuserid=#(recvuserid)
+    </select>
+
+    <select id="selectUnReadNotice" parameterType="int">
+        select count(*) from msg_recv where state = '0' and msgtype='1' and recvuserid=#(recvuserid)
+    </select>
+
+
+    <select id="selectMessageOfUnReadMsg" parameterType="int" resultMap="BaseResultMap">
+        select * from msg_recv where state = '0' and recvuserid=#(recvuserid) limit 0,#(pageSize)
+    </select>
+
+    <select id="selectMessageOfAlarm" parameterType="int" resultMap="BaseResultMap">
+        select * from msg_recv where state = '0' and msgtype='0' and recvuserid=#(recvuserid) limit 0,#(pageSize)
+    </select>
+
+    <select id="selectMessageOfChat" parameterType="int" resultMap="BaseResultMap">
+        select * from msg_recv where state = '0' and msgtype='2' and recvuserid=#(recvuserid) limit 0,#(pageSize)
+    </select>
+
+    <select id="selectMessageOfNotice" parameterType="int" resultMap="BaseResultMap">
+        select * from msg_recv where state = '0' and msgtype='1' and recvuserid=#(recvuserid) limit 0,#(pageSize)
+    </select>
+
     <sql id="Example_Where_Clause">
         <where>
             <foreach collection="oredCriteria" item="criteria" separator="or">
@@ -95,6 +128,9 @@
         </if>
     </delete>
     <insert id="insert" parameterType="cn.smartpolice.entity.MsgRecv">
+        <selectKey keyProperty="recvid" order="AFTER" resultType="java.lang.Integer">
+            select LAST_INSERT_ID()
+        </selectKey>
         insert into msg_recv (recvid, recvuserid, msgtype,
         recvtime, state, messageid,
         SENDUSERID, recvtype)

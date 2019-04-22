@@ -15,20 +15,20 @@ public class MsgNoticeExample {
         oredCriteria = new ArrayList<Criteria>();
     }
 
-    public String getOrderByClause() {
-        return orderByClause;
-    }
-
     public void setOrderByClause(String orderByClause) {
         this.orderByClause = orderByClause;
     }
 
-    public boolean isDistinct() {
-        return distinct;
+    public String getOrderByClause() {
+        return orderByClause;
     }
 
     public void setDistinct(boolean distinct) {
         this.distinct = distinct;
+    }
+
+    public boolean isDistinct() {
+        return distinct;
     }
 
     public List<Criteria> getOredCriteria() {
@@ -425,66 +425,6 @@ public class MsgNoticeExample {
             return (Criteria) this;
         }
 
-        public Criteria andRecvidIsNull() {
-            addCriterion("recvid is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andRecvidIsNotNull() {
-            addCriterion("recvid is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andRecvidEqualTo(Integer value) {
-            addCriterion("recvid =", value, "recvid");
-            return (Criteria) this;
-        }
-
-        public Criteria andRecvidNotEqualTo(Integer value) {
-            addCriterion("recvid <>", value, "recvid");
-            return (Criteria) this;
-        }
-
-        public Criteria andRecvidGreaterThan(Integer value) {
-            addCriterion("recvid >", value, "recvid");
-            return (Criteria) this;
-        }
-
-        public Criteria andRecvidGreaterThanOrEqualTo(Integer value) {
-            addCriterion("recvid >=", value, "recvid");
-            return (Criteria) this;
-        }
-
-        public Criteria andRecvidLessThan(Integer value) {
-            addCriterion("recvid <", value, "recvid");
-            return (Criteria) this;
-        }
-
-        public Criteria andRecvidLessThanOrEqualTo(Integer value) {
-            addCriterion("recvid <=", value, "recvid");
-            return (Criteria) this;
-        }
-
-        public Criteria andRecvidIn(List<Integer> values) {
-            addCriterion("recvid in", values, "recvid");
-            return (Criteria) this;
-        }
-
-        public Criteria andRecvidNotIn(List<Integer> values) {
-            addCriterion("recvid not in", values, "recvid");
-            return (Criteria) this;
-        }
-
-        public Criteria andRecvidBetween(Integer value1, Integer value2) {
-            addCriterion("recvid between", value1, value2, "recvid");
-            return (Criteria) this;
-        }
-
-        public Criteria andRecvidNotBetween(Integer value1, Integer value2) {
-            addCriterion("recvid not between", value1, value2, "recvid");
-            return (Criteria) this;
-        }
-
         public Criteria andSetsIsNull() {
             addCriterion("sets is null");
             return (Criteria) this;
@@ -640,6 +580,38 @@ public class MsgNoticeExample {
 
         private String typeHandler;
 
+        public String getCondition() {
+            return condition;
+        }
+
+        public Object getValue() {
+            return value;
+        }
+
+        public Object getSecondValue() {
+            return secondValue;
+        }
+
+        public boolean isNoValue() {
+            return noValue;
+        }
+
+        public boolean isSingleValue() {
+            return singleValue;
+        }
+
+        public boolean isBetweenValue() {
+            return betweenValue;
+        }
+
+        public boolean isListValue() {
+            return listValue;
+        }
+
+        public String getTypeHandler() {
+            return typeHandler;
+        }
+
         protected Criterion(String condition) {
             super();
             this.condition = condition;
@@ -674,38 +646,6 @@ public class MsgNoticeExample {
 
         protected Criterion(String condition, Object value, Object secondValue) {
             this(condition, value, secondValue, null);
-        }
-
-        public String getCondition() {
-            return condition;
-        }
-
-        public Object getValue() {
-            return value;
-        }
-
-        public Object getSecondValue() {
-            return secondValue;
-        }
-
-        public boolean isNoValue() {
-            return noValue;
-        }
-
-        public boolean isSingleValue() {
-            return singleValue;
-        }
-
-        public boolean isBetweenValue() {
-            return betweenValue;
-        }
-
-        public boolean isListValue() {
-            return listValue;
-        }
-
-        public String getTypeHandler() {
-            return typeHandler;
         }
     }
 }

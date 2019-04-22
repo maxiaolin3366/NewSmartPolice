@@ -20,6 +20,20 @@ public class SysStatInfo {
     private long openFileNum; //文件打开数量
     private Date serverStartDate; //服务器启动时间
 
+    @Override
+    public String toString() {
+        return "SysStatInfo{" +
+                "receicvenum=" + receicvenum +
+                ", sendnum=" + sendnum +
+                ", loginusernum=" + loginusernum +
+                ", logindevnum=" + logindevnum +
+                ", viewusernum=" + viewusernum +
+                ", ordernum=" + ordernum +
+                ", openFileNum=" + openFileNum +
+                ", serverStartDate=" + serverStartDate +
+                '}';
+    }
+
     public long getReceicvenum() {
         return receicvenum;
     }

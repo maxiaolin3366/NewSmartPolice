@@ -77,7 +77,7 @@
                 <!--自己实现的编解码器filter-->
                 <!-- <entry key="codecFilter" value-ref="codecFilter"/>-->
                 <!--日志的filter-->
-                <!-- <entry key="loggingFilter" value-ref="loggingFilter"/>-->
+                <entry key="loggingFilter" value-ref="loggingFilter"/>
                 <!--心跳filter-->
                 <!-- <entry key="keepAliveFilter" value-ref="keepAliveFilter" />-->
             </map>
@@ -90,7 +90,7 @@
     </bean>
 
     <!--日志-->
-    <!-- <bean id="loggingFilter" class="org.apache.mina.filter.logging.LoggingFilter"/>-->
+    <bean id="loggingFilter" class="org.apache.mina.filter.logging.LoggingFilter"/>
 
     <!--编解码-->
     <!-- <bean id="codecFilter" class="org.apache.mina.filter.codec.ProtocolCodecFilter">

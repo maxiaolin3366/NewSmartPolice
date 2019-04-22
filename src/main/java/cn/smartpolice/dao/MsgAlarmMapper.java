@@ -21,4 +21,6 @@ public interface MsgAlarmMapper {
     int updateByExampleSelective(@Param("record") MsgAlarm record, @Param("example") MsgAlarmExample example);
 
     int updateByExample(@Param("record") MsgAlarm record, @Param("example") MsgAlarmExample example);
+
+    MsgAlarm selectAlarm(int messageid);
 }

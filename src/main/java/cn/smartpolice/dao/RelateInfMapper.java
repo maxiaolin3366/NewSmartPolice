@@ -21,4 +21,8 @@ public interface RelateInfMapper {
     int updateByExampleSelective(@Param("record") RelateInf record, @Param("example") RelateInfExample example);
 
     int updateByExample(@Param("record") RelateInf record, @Param("example") RelateInfExample example);
+
+    List<RelateInf> findUserIdByDeviceId(int deviceid);
+
+    List<RelateInf> findManagerIdByDeviceId(int deviceid);
 }
